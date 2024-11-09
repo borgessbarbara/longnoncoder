@@ -6,6 +6,7 @@
 
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+include { QC_FILT                } from '../subworkflows/local/qc'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -30,12 +31,13 @@ workflow LONGNONCODER {
     //
     // MODULE: Run FastQC
     //
-    FASTQC (
-        ch_samplesheet
-    )
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
-
+    if (!params.skip_qc){
+        QC_FILT (
+            ch_samplesheet
+        )
+        ch_multiqc_files = ch_multiqc_files.mix(QC_FILT.out.multiqc)
+        ch_versions = ch_versions.mix(QC_FILT.out.versions.first())
+    }
     //
     // Collate and save software versions
     //

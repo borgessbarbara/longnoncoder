@@ -285,5 +285,34 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ]
+    ],
+    "properties": {
+        "skip_qc": {
+            "type": "string"
+        },
+        "skip_filtering": {
+            "type": "string"
+        },
+        "minqual": {
+            "type": "integer"
+        },
+        "minlen": {
+            "type": "integer"
+        },
+        "maxlen": {
+            "type": "integer"
+        },
+        "maxgc": {
+            "type": "number"
+        },
+        "mingc": {
+            "type": "number"
+        },
+        "headcrop": {
+            "type": "number"
+        },
+        "tailcrop": {
+            "type": "number"
+        }
+    }
 }
