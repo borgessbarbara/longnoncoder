@@ -7,6 +7,8 @@ include { NANOCOMP as NANOCOMP_RAW_RIDGE    } from '../../modules/local/nanocomp
 include { NANOCOMP as NANOCOMP_FILT_VIOLIN  } from '../../modules/local/nanocomp/main'
 include { NANOCOMP as NANOCOMP_FILT_BOX     } from '../../modules/local/nanocomp/main'
 include { NANOCOMP as NANOCOMP_FILT_RIDGE   } from '../../modules/local/nanocomp/main'
+include { NANOQC   as NANOQC_RAW            } from '../../modules/local/nanocomp/main'
+include { NANOQC   as NANOQC_FILT           } from '../../modules/local/nanocomp/main'
 include { NANOPLOT as NANOPLOT_RAW          } from '../../modules/nf-core/nanoplot/main'
 include { NANOPLOT as NANOPLOT_FILT         } from '../../modules/nf-core/nanoplot/main'
 include { CHOPPER } from '../../modules/nf-core/chopper/main'
@@ -45,7 +47,10 @@ workflow QC_FILT {
 
      ch_versions = ch_versions.mix(NANOCOMP_RAW_VIOLIN.out.versions.first().ifEmpty(null))
 
+    // Running nanoqc on pre-filtered dataset
+    NANOQC_RAW(ch_reads)
 
+    ch_versions = ch_versions.mix(NANOQC_RAW.out.versions.first().ifEmpty(null))
     // Running nanoplot on pre-filtered dataset
 
     NANOPLOT_RAW(ch_reads)
@@ -75,6 +80,9 @@ workflow QC_FILT {
     NANOCOMP_FILT_VIOLIN(ch_combined_filtered)
     NANOCOMP_FILT_BOX(ch_combined_filtered)
     NANOCOMP_FILT_RIDGE(ch_combined_filtered)
+
+    // Nanoqc
+    NANOQC_FILT(CHOPPER.out.fastq)
 
     // Nanoplot
     NANOPLOT_FILT(CHOPPER.out.fastq)
