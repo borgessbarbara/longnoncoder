@@ -7,11 +7,11 @@ include { NANOCOMP as NANOCOMP_RAW_RIDGE    } from '../../modules/local/nanocomp
 include { NANOCOMP as NANOCOMP_FILT_VIOLIN  } from '../../modules/local/nanocomp/main'
 include { NANOCOMP as NANOCOMP_FILT_BOX     } from '../../modules/local/nanocomp/main'
 include { NANOCOMP as NANOCOMP_FILT_RIDGE   } from '../../modules/local/nanocomp/main'
-include { NANOQC   as NANOQC_RAW            } from '../../modules/local/nanocomp/main'
-include { NANOQC   as NANOQC_FILT           } from '../../modules/local/nanocomp/main'
+include { NANOQC   as NANOQC_RAW            } from '../../modules/local/nanoqc/main'
+include { NANOQC   as NANOQC_FILT           } from '../../modules/local/nanoqc/main'
 include { NANOPLOT as NANOPLOT_RAW          } from '../../modules/nf-core/nanoplot/main'
 include { NANOPLOT as NANOPLOT_FILT         } from '../../modules/nf-core/nanoplot/main'
-include { CHOPPER } from '../../modules/nf-core/chopper/main'
+include { CHOPPER                           } from '../../modules/nf-core/chopper/main'
 
 /*
 ========================================================================================
