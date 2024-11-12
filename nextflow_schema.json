@@ -288,10 +288,10 @@
     ],
     "properties": {
         "skip_qc": {
-            "type": "string"
+            "type": "boolean"
         },
         "skip_filtering": {
-            "type": "string"
+            "type": "boolean"
         },
         "minqual": {
             "type": "integer"
