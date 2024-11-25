@@ -20,6 +20,7 @@
 ## Introduction
 
 **nf-core/longnoncoder** is a bioinformatics pipeline that ...
+blablabla
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
