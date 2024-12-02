@@ -1,16 +1,11 @@
 //
 // MODULE: Installed directly from nf-core/modules
 //
-include { NANOCOMP as NANOCOMP_RAW_VIOLIN   } from '../../modules/local/nanocomp/main'
+
 include { NANOCOMP as NANOCOMP_RAW_BOX      } from '../../modules/local/nanocomp/main'
-include { NANOCOMP as NANOCOMP_RAW_RIDGE    } from '../../modules/local/nanocomp/main'
-include { NANOCOMP as NANOCOMP_FILT_VIOLIN  } from '../../modules/local/nanocomp/main'
 include { NANOCOMP as NANOCOMP_FILT_BOX     } from '../../modules/local/nanocomp/main'
-include { NANOCOMP as NANOCOMP_FILT_RIDGE   } from '../../modules/local/nanocomp/main'
-include { NANOQC   as NANOQC_RAW            } from '../../modules/local/nanoqc/main'
-include { NANOQC   as NANOQC_FILT           } from '../../modules/local/nanoqc/main'
-include { NANOPLOT as NANOPLOT_RAW          } from '../../modules/nf-core/nanoplot/main'
-include { NANOPLOT as NANOPLOT_FILT         } from '../../modules/nf-core/nanoplot/main'
+include { FASTQC as FASTQC_RAW              } from '../../modules/nf-core/fastqc/main'
+include { FASTQC as FASTQC_FILT             } from '../../modules/nf-core/fastqc/main'
 include { CHOPPER                           } from '../../modules/nf-core/chopper/main'
 
 /*
@@ -40,27 +35,21 @@ workflow QC_FILT {
              .map {filelist -> [[id:"All"],filelist]}
              .set {ch_combined_raw}
              
-
-     NANOCOMP_RAW_VIOLIN(ch_combined_raw) 
      NANOCOMP_RAW_BOX(ch_combined_raw) 
-     NANOCOMP_RAW_RIDGE(ch_combined_raw) 
+     
 
-     ch_versions = ch_versions.mix(NANOCOMP_RAW_VIOLIN.out.versions.first().ifEmpty(null))
+     ch_versions = ch_versions.mix(NANOCOMP_RAW_BOX.out.versions.first().ifEmpty(null))
 
-    // Running nanoqc on pre-filtered dataset
-    NANOQC_RAW(ch_reads)
+    // Running fastqc on pre-filtered dataset
+    FASTQC_RAW(ch_reads)
 
-    ch_versions = ch_versions.mix(NANOQC_RAW.out.versions.first().ifEmpty(null))
-    // Running nanoplot on pre-filtered dataset
-
-    NANOPLOT_RAW(ch_reads)
-
-    ch_versions = ch_versions.mix(NANOPLOT_RAW.out.versions.first().ifEmpty(null))
+    ch_versions = ch_versions.mix(FASTQC_RAW.out.versions.first().ifEmpty(null))
+   
 
     // Generating a multiqc file for raw reads report
 
     // ch_multiqc_raw = ch_multiqc_raw.mix(RAW_NANOCOMP.out.zip.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_raw = ch_multiqc_raw.mix(NANOPLOT_RAW.out.txt.collect{it[1]}.ifEmpty([]))   
+    ch_multiqc_raw = ch_multiqc_raw.mix(FASTQC_RAW.out.zip.collect{it[1]}.ifEmpty([]))   
     
     ch_multiqc_all = ch_multiqc_all.mix(ch_multiqc_raw.ifEmpty([]))
 
@@ -77,18 +66,13 @@ workflow QC_FILT {
              .map {filelist -> [[id:"All"],filelist]}
              .set {ch_combined_filtered}
 
-    NANOCOMP_FILT_VIOLIN(ch_combined_filtered)
     NANOCOMP_FILT_BOX(ch_combined_filtered)
-    NANOCOMP_FILT_RIDGE(ch_combined_filtered)
 
-    // Nanoqc
-    NANOQC_FILT(CHOPPER.out.fastq)
-
-    // Nanoplot
-    NANOPLOT_FILT(CHOPPER.out.fastq)
+    // fastqc
+    FASTQC_FILT(CHOPPER.out.fastq)
 
     //ch_multiqc_filt = ch_multiqc_filt.mix(FILT_NANOCOMP.out.zip.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_filt = ch_multiqc_filt.mix(NANOPLOT_FILT.out.txt.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_filt = ch_multiqc_filt.mix(FASTQC_FILT.out.zip.collect{it[1]}.ifEmpty([]))
 
     ch_multiqc_all = ch_multiqc_all.mix(ch_multiqc_filt.ifEmpty([]))
 
