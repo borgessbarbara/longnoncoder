@@ -1,2 +1,2 @@
 sample,fastq_1,fastq_2
-SRR22399487_1,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/NA12878_DNA.fastq.gz,
+NA12878,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/NA12878_DNA.fastq.gz,

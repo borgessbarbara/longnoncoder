@@ -1,7 +1,11 @@
 //
 // MODULE: Local to the pipeline
 //
-include { MINIMAP2_ALIGN        } from '../../modules/nf-core/minimap2/align/main'
+include { MINIMAP2_ALIGN                  } from '../../modules/nf-core/minimap2/align/main'
+include { SAMTOOLS_VIEW as MAPPED         } from '../../modules/nf-core/samtools/view/main'
+include { SAMTOOLS_VIEW as UNMAPPED       } from '../../modules/nf-core/samtools/view/main'
+include { SAMTOOLS_VIEW as TOTAL          } from '../../modules/nf-core/samtools/view/main'
+include { SAMTOOLS_VIEW as PRIMARY        } from '../../modules/nf-core/samtools/view/main'
 
 /*
 ========================================================================================
@@ -14,10 +18,11 @@ workflow ALIGNMENT {
        reads     
     
    main:
-    ch_versions  = Channel.empty()
-    ch_bam       = Channel.empty()
-    ch_index     = Channel.empty()
-    ch_reference = Channel.empty()
+    ch_versions     = Channel.empty()
+    ch_bam          = Channel.empty()
+    ch_index        = Channel.empty()
+    ch_alignment_qc = Channel.empty()
+    ch_reference    = Channel.empty()
 
   // Building metamap for the reference
     Channel
@@ -26,6 +31,7 @@ workflow ALIGNMENT {
         def basename = file_path.baseName  // Extract the base name
         [basename, file_path.toString()]  // Create the tuple
     }
+    .collect()
     .set {ch_reference}
   // Alignment with the minimap2 module in case no filtering is applied to read length
 
@@ -45,7 +51,37 @@ workflow ALIGNMENT {
 
         ch_versions = ch_versions.mix(MINIMAP2_ALIGN.out.versions.first().ifEmpty(null))
 
-        
+        if (!params.skip_alignment_qc){
+            ch_bam
+            .join(ch_index)
+            .set{ ch_alignment_qc }
+
+            MAPPED(
+                ch_alignment_qc,
+                [[],[]],
+                []
+            )
+
+            UNMAPPED(
+                ch_alignment_qc,
+                [[],[]],
+                []
+            )
+
+            TOTAL(
+                ch_alignment_qc,
+                [[],[]],
+                []
+            )
+
+            PRIMARY(
+                ch_alignment_qc,
+                [[],[]],
+                []
+            )
+
+            ch_versions = ch_versions.mix(MAPPED.out.versions.first().ifEmpty(null))
+        }
 
    emit:
    index = ch_index
