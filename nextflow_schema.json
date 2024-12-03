@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/longnoncoder/master/nextflow_schema.json",
     "title": "nf-core/longnoncoder pipeline parameters",
     "description": "A pipeline for isoform-specific lncRNA discovery for ONT long-reads",
@@ -313,6 +313,27 @@
         },
         "tailcrop": {
             "type": "number"
+        },
+        "skip_alignment": {
+            "type": "boolean"
+        },
+        "reference": {
+            "type": "string"
+        },
+        "bam_format": {
+            "type": "boolean"
+        },
+        "cigar_paf_format": {
+            "type": "boolean"
+        },
+        "cigar_bam": {
+            "type": "boolean"
+        },
+        "bam_index_extension": {
+            "type": "string"
+        },
+        "skip_alignment_qc": {
+            "type": "boolean"
         }
     }
 }

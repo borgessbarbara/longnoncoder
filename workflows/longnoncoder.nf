@@ -6,6 +6,7 @@
 
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { QC_FILT                } from '../subworkflows/local/qc'
+include { ALIGNMENT              } from '../subworkflows/local/alignment'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -28,7 +29,7 @@ workflow LONGNONCODER {
     ch_multiqc_files = Channel.empty()
 
     //
-    // MODULE: Run FastQC
+    //Run QC workflow
     //
     if (!params.skip_qc){
         QC_FILT (
@@ -36,6 +37,13 @@ workflow LONGNONCODER {
         )
         ch_multiqc_files = ch_multiqc_files.mix(QC_FILT.out.multiqc)
         ch_versions = ch_versions.mix(QC_FILT.out.versions.first())
+    }
+    //
+    // Run alignment workflow
+    //
+    if (!params.skip_alignment){
+        ALIGNMENT(QC_FILT.out.filt_reads)
+        ch_versions = ch_versions.mix(ALIGNMENT.out.versions.first())
     }
     //
     // Collate and save software versions
