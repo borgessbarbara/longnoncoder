@@ -2,6 +2,7 @@ process MINIMAP2_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
+    // Note: the versions here need to match the versions used in the mulled container below and minimap2/index
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:3161f532a5ea6f1dec9be5667c9efc2afdac6104-0' :
@@ -11,13 +12,14 @@ process MINIMAP2_ALIGN {
     tuple val(meta), path(reads)
     tuple val(meta2), path(reference)
     val bam_format
+    val bam_index_extension
     val cigar_paf_format
     val cigar_bam
 
     output:
-    tuple val(meta), path("*.paf"), optional: true, emit: paf
-    tuple val(meta), path("*.bam"), optional: true, emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.paf")                       , optional: true, emit: paf
+    tuple val(meta), path("*.bam")                       , optional: true, emit: bam
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,6 +49,7 @@ process MINIMAP2_ALIGN {
         $set_cigar_bam \\
         $bam_output
 
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         minimap2: \$(minimap2 --version 2>&1)
@@ -57,6 +60,8 @@ process MINIMAP2_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = bam_format ? "${prefix}.sorted.bam" : "${prefix}.paf"
+    def bam_input = "${reads.extension}".matches('sam|bam|cram')
+    def target = reference ?: (bam_input ? error("BAM input requires reference") : reads)
 
     """
     touch $output_file
