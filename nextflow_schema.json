@@ -329,9 +329,6 @@
         "cigar_bam": {
             "type": "boolean"
         },
-        "bam_index_extension": {
-            "type": "string"
-        },
         "skip_alignment_qc": {
             "type": "boolean"
         }

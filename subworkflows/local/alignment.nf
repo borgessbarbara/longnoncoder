@@ -1,11 +1,11 @@
 //
 // MODULE: Local to the pipeline
 //
-include { MINIMAP2_ALIGN                  } from '../../modules/nf-core/minimap2/align/main'
-include { SAMTOOLS_VIEW as MAPPED         } from '../../modules/nf-core/samtools/view/main'
-include { SAMTOOLS_VIEW as UNMAPPED       } from '../../modules/nf-core/samtools/view/main'
-include { SAMTOOLS_VIEW as TOTAL          } from '../../modules/nf-core/samtools/view/main'
-include { SAMTOOLS_VIEW as PRIMARY        } from '../../modules/nf-core/samtools/view/main'
+include { MINIMAP2_ALIGN                  } from '../../modules/local/minimap2/align/main'
+include { SAMTOOLS_VIEW as MAPPED         } from '../../modules/local/samtools/view/main'
+include { SAMTOOLS_VIEW as UNMAPPED       } from '../../modules/local/samtools/view/main'
+include { SAMTOOLS_VIEW as TOTAL          } from '../../modules/local/samtools/view/main'
+include { SAMTOOLS_VIEW as PRIMARY        } from '../../modules/local/samtools/view/main'
 
 /*
 ========================================================================================
@@ -39,43 +39,37 @@ workflow ALIGNMENT {
         reads,
         ch_reference,
         params.bam_format,
-        params.bam_index_extension,
         params.cigar_paf_format,
         params.cigar_bam
         )
 
         MINIMAP2_ALIGN.out.bam
             .set{ ch_bam }
-        MINIMAP2_ALIGN.out.index
-            .set{ ch_index }
 
         ch_versions = ch_versions.mix(MINIMAP2_ALIGN.out.versions.first().ifEmpty(null))
 
         if (!params.skip_alignment_qc){
-            ch_bam
-            .join(ch_index)
-            .set{ ch_alignment_qc }
 
             MAPPED(
-                ch_alignment_qc,
+                ch_bam,
                 [[],[]],
                 []
             )
 
             UNMAPPED(
-                ch_alignment_qc,
+                ch_bam,
                 [[],[]],
                 []
             )
 
             TOTAL(
-                ch_alignment_qc,
+                ch_bam,
                 [[],[]],
                 []
             )
 
             PRIMARY(
-                ch_alignment_qc,
+                ch_bam,
                 [[],[]],
                 []
             )

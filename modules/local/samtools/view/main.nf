@@ -8,7 +8,7 @@ process SAMTOOLS_VIEW {
         'community.wave.seqera.io/library/htslib_samtools:1.21--6cb89bfd40cbaabf' }"
 
     input:
-    tuple val(meta), path(input), path(index)
+    tuple val(meta), path(input)
     tuple val(meta2), path(fasta)
     path qname
 

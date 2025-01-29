@@ -12,13 +12,12 @@ process MINIMAP2_ALIGN {
     tuple val(meta), path(reads)
     tuple val(meta2), path(reference)
     val bam_format
-    val bam_index_extension
     val cigar_paf_format
     val cigar_bam
 
     output:
     tuple val(meta), path("*.paf")                       , optional: true, emit: paf
-    tuple val(meta), path("*.bam")                       , optional: true, emit: bam
+    tuple val(meta), path("*.sorted.bam")                , optional: true, emit: bam
     path "versions.yml"                                  , emit: versions
 
     when:
