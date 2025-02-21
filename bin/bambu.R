@@ -5,7 +5,7 @@
 library(ggplot2)
 library(Rsamtools)
 library(bambu)
-library(openxlsx)
+library(readr)
 library(BiocParallel)
 library(rtracklayer)
 library(optparse)
@@ -77,7 +77,7 @@ se.multiSample <- tryCatch({
 
 # --- Add sample metadata ---
 sample_info <- tryCatch({
-  read.xlsx(sample_info_file)
+  read.csv(sample_info_file)
 }, error = function(e) {
   stop(paste("Error reading sample information file:", e$message))
 })
@@ -110,11 +110,6 @@ lapply(names(expr_matrices), function(x) {
   write.csv(expr_matrices[[x]], file = file.path(output_dir, paste0("bambu_", x, "_exp.csv")))
 })
 
-# --- Save annotations ---
-
-save.file.transcript <- file.path(output_dir, "transcript_annotations.gtf")
-writeToGTF(rowRanges(se.multiSample), file = save.file.transcript)
-
 # --- Save SummarizedExperiment objects ---
 saveRDS(se.multiSample, file = file.path(output_dir, "se_multiSample.rds"))
 saveRDS(seGene.multiSample, file = file.path(output_dir, "seGene_multiSample.rds"))
@@ -122,13 +117,18 @@ saveRDS(seGene.multiSample, file = file.path(output_dir, "seGene_multiSample.rds
 # --- Save Bambu's official outputs ---
 writeBambuOutput(se.multiSample, output_dir, prefix = "BambuOutput_")
 
+# --- Save the new transcripts
+transcript_annotations <- rtracklayer::import("BambuOutput_extended_annotations.gtf")
+
+newtx_gtf <- transcript_annotations[grep("^BambuTx", transcript_annotations$transcript_id)]
+rtracklayer::export(newtx_gtf, "bambu_novel_transcripts.gtf")
+
 # --- Create and save plots ---
 
 # Create a list of plots
 plots <- list(
   heatmap_transcript = plotBambu(se.multiSample, type = "heatmap"),
   pca_transcript = plotBambu(se.multiSample, type = "pca"),
-  annotation_plot = plotBambu(se.multiSample, type = "annotation", gene_id = "ENSG00000139618"),
   heatmap_gene = plotBambu(seGene.multiSample, type = "heatmap")
 )
 

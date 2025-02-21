@@ -1,4 +1,4 @@
-process MINIMAP2_ALIGN {
+process BAMBU {
     tag "$meta.id"
     label 'process_medium'
 
@@ -15,7 +15,7 @@ process MINIMAP2_ALIGN {
 
 
     output:
-    
+
     path "versions.yml"                                  , emit: versions
 
     when:
@@ -29,7 +29,8 @@ process MINIMAP2_ALIGN {
         -g $reference \\
         -a $annotation \\
         -b $bam_list \\
-        -n $task.cpus
+        -n $task.cpus \\
+        -o .
 
 
     cat <<-END_VERSIONS > versions.yml

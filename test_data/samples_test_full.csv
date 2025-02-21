@@ -1,5 +1,5 @@
-sample,fastq_1,fastq_2
-MCF7_1,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/MCF7_directcDNA_replicate1.fastq.gz,
-MCF7_2,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/MCF7_directcDNA_replicate3.fastq.gz,
-K562_1,	https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/K562_directcDNA_replicate1.fastq.gz,
-K562_2,	https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/K562_directcDNA_replicate4.fastq.gz,
+sample,cell_line,fastq
+MCF7_1,MCF7,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/MCF7_directcDNA_replicate1.fastq.gz
+MCF7_2,MCF7,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/MCF7_directcDNA_replicate3.fastq.gz
+K562_1,K562,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/K562_directcDNA_replicate1.fastq.gz
+K562_2,K562,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/quantification/stringtie/K562_directcDNA_replicate4.fastq.gz

@@ -1,2 +1,2 @@
-sample,fastq_1,fastq_2
-NA12878,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/NA12878_DNA.fastq.gz,
+sample,cell_line,fastq
+NA12878,NA12878,https://raw.githubusercontent.com/nf-core/test-datasets/nanoseq/fastq/demultiplexed/NA12878_DNA.fastq.gz,
