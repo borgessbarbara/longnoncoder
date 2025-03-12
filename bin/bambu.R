@@ -29,8 +29,6 @@ option_list <- list(
 opt_parser <- OptionParser(option_list = option_list)
 opt <- parse_args(opt_parser)
 
-print(opt)
-
 # Check if required arguments are provided
 if (is.null(opt$genome) ||
     is.null(opt$annotation) || is.null(opt$bamfiles) || is.null(opt$sampleinfo)) {
@@ -94,21 +92,6 @@ seGene.multiSample <- transcriptToGeneExpression(se.multiSample)
 colData(seGene.multiSample)$cellLine <- as.factor(sample_info$cellLine)
 colData(seGene.multiSample)$groupVar <- sample_info$cellLine
 
-# --- Extract and save expression data ---
-
-# Save the different expression matrices
-expr_matrices <- list(
-  Gcounts = assays(seGene.multiSample)$counts,
-  Tcounts = assays(se.multiSample)$counts,
-  Tcounts_CPM = assays(se.multiSample)$CPM,
-  Tcounts_UC = assays(se.multiSample)$uniqueCounts,
-  Tcounts_FLC = assays(se.multiSample)$fullLengthCounts
-)
-
-# Use lapply to iterate and save each matrix with its corresponding name
-lapply(names(expr_matrices), function(x) {
-  write.csv(expr_matrices[[x]], file = file.path(output_dir, paste0("bambu_", x, "_exp.csv")))
-})
 
 # --- Save SummarizedExperiment objects ---
 saveRDS(se.multiSample, file = file.path(output_dir, "se_multiSample.rds"))

@@ -16,7 +16,11 @@ process BAMBU {
 
 
     output:
-
+    path "*.png"                                         , emit: plots
+    path "*.txt"                                         , emit: bambu_report
+    path "bambu_novel_transcripts.gtf"                   , emit: gtf_new_transcripts
+    path "BambuOutput_extended_annotations.gtf"          , emit: gtf_all_transcripts
+    path "*.rds"                                         , emit: rds
     path "versions.yml"                                  , emit: versions
 
     when:
