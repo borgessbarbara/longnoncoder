@@ -318,7 +318,8 @@
             "type": "boolean"
         },
         "reference": {
-            "type": "string"
+            "type": "string",
+            "description": "Reference genome used for assembly"
         },
         "bam_format": {
             "type": "boolean"
@@ -331,6 +332,10 @@
         },
         "skip_alignment_qc": {
             "type": "boolean"
+        },
+        "annotation": {
+            "type": "string",
+            "description": "GTF file for reference genome"
         }
     }
 }

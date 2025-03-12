@@ -77,13 +77,13 @@ se.multiSample <- tryCatch({
 
 # --- Add sample metadata ---
 sample_info <- tryCatch({
-  read.csv(sample_info_file)
+  read.table(sample_info_file, sep="\t")
 }, error = function(e) {
   stop(paste("Error reading sample information file:", e$message))
 })
 
-colData(se.multiSample)$cellLine <- as.factor(sample_info$cellLine)
-colData(se.multiSample)$groupVar <- sample_info$cellLine
+colData(se.multiSample)$cellLine <- as.factor(sample_info[1])
+colData(se.multiSample)$groupVar <- sample_info[1]
 
 # --- Transcript-level analysis ---
 

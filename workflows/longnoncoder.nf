@@ -4,13 +4,14 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { QC_FILT                } from '../subworkflows/local/qc'
-include { ALIGNMENT              } from '../subworkflows/local/alignment'
-include { paramsSummaryMap       } from 'plugin/nf-validation'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_longnoncoder_pipeline'
+include { MULTIQC                   } from '../modules/nf-core/multiqc/main'
+include { QC_FILT                   } from '../subworkflows/local/qc'
+include { ALIGNMENT                 } from '../subworkflows/local/alignment'
+include { TRANSCRIPT_RECONSTRUCTION } from '../subworkflows/local/transcript_reconstruction'
+include { paramsSummaryMap          } from 'plugin/nf-validation'
+include { paramsSummaryMultiqc      } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML    } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText    } from '../subworkflows/local/utils_nfcore_longnoncoder_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,6 +28,7 @@ workflow LONGNONCODER {
 
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
+    ch_bamlist = Channel.empty()
 
     //
     //Run QC workflow
@@ -45,6 +47,16 @@ workflow LONGNONCODER {
         ALIGNMENT(QC_FILT.out.filt_reads)
         ch_versions = ch_versions.mix(ALIGNMENT.out.versions.first())
     }
+
+    TRANSCRIPT_RECONSTRUCTION (
+        ALIGNMENT.out.bam,
+        params.reference,
+        params.annotation
+    )
+
+    TRANSCRIPT_RECONSTRUCTION.out.bamlist
+        .set { ch_bamlist }
+
     //
     // Collate and save software versions
     //
