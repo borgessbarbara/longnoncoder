@@ -8,6 +8,7 @@ library(bambu)
 library(readr)
 library(BiocParallel)
 library(rtracklayer)
+library(GenomicRanges)
 library(optparse)
 
 # --- Parse command-line arguments ---
@@ -110,26 +111,36 @@ rtracklayer::export(newtx_gtf, "bambu_novel_transcripts.gtf")
 
 # Create a list of plots
 plots <- list(
-  heatmap_transcript = plotBambu(se.multiSample, type = "heatmap"),
-  pca_transcript = plotBambu(se.multiSample, type = "pca"),
-  heatmap_gene = plotBambu(seGene.multiSample, type = "heatmap")
+  heatmap_transcript = plotBambu(se.multiSample, type = "heatmap", group.variable="group"),
+  heatmap_gene = plotBambu(seGene.multiSample, type = "heatmap", group.variable="group"),
+  pca = plotBambu(se.multiSample, type = "pca"),
+  pca_grouped = plotBambu(se.multiSample, type = "pca", group.variable = "group")
 )
 
 # Use lapply to iterate and save each plot with its corresponding name
 lapply(names(plots), function(x) {
   # Determine file extension based on plot type
-  file_ext <- if (grepl("heatmap", x)) "png" else "pdf"
+  file_ext <- "png"
 
   # Save the plot
   file_path <- file.path(output_dir, paste0(x, ".", file_ext))
 
   # Use the appropriate device based on file extension
-  if (file_ext == "png") {
-    png(file_path, width = 10, height = 8, units = "in", res = 600)  # Adjust dimensions and resolution as needed
-  } else {
-    pdf(file_path, width = 10, height = 8)  # Adjust dimensions as needed
-  }
+  png(file_path, width = 8, height = 6, units = "in", res = 600)  # Adjust dimensions and resolution as needed
 
   print(plots[[x]])  # Print the plot to the device
   dev.off()
 })
+
+# Function to reorder GTF data
+reorder_gtf <- function(gtf_data) {
+  return(gtf_data[order(gtf_data$transcript_id, gtf_data$type == "transcript", decreasing = TRUE)])
+}
+
+# Reorder the GTF data
+sorted_novel <- reorder_gtf(newtx_gtf)
+sorted_ext <- reorder_gtf(transcript_annotations)
+
+# Write the reordered data to the output GTF file
+rtracklayer::export(sorted_novel, "bambu_novel_transcripts.gtf")
+rtracklayer::export(sorted_ext, "BambuOutput_extended_annotations.gtf")
