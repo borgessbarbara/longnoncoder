@@ -81,8 +81,8 @@ sample_info <- tryCatch({
   stop(paste("Error reading sample information file:", e$message))
 })
 
-colData(se.multiSample)$cellLine <- as.factor(sample_info[1])
-colData(se.multiSample)$groupVar <- sample_info[1]
+colData(se.multiSample)$cellLine <- as.factor(sample_info[[1]])
+colData(se.multiSample)$groupVar <- sample_info[[1]]
 
 # --- Transcript-level analysis ---
 
@@ -90,8 +90,8 @@ colData(se.multiSample)$groupVar <- sample_info[1]
 seGene.multiSample <- transcriptToGeneExpression(se.multiSample)
 
 # Add sample metadata to gene-level object
-colData(seGene.multiSample)$cellLine <- as.factor(sample_info$cellLine)
-colData(seGene.multiSample)$groupVar <- sample_info$cellLine
+colData(seGene.multiSample)$cellLine <- as.factor(sample_info[[1]])
+colData(seGene.multiSample)$groupVar <- sample_info[[1]]
 
 
 # --- Save SummarizedExperiment objects ---
@@ -111,10 +111,10 @@ rtracklayer::export(newtx_gtf, "bambu_novel_transcripts.gtf")
 
 # Create a list of plots
 plots <- list(
-  heatmap_transcript = plotBambu(se.multiSample, type = "heatmap", group.variable="group"),
-  heatmap_gene = plotBambu(seGene.multiSample, type = "heatmap", group.variable="group"),
+  heatmap_transcript = plotBambu(se.multiSample, type = "heatmap", group.variable="groupVar"),
+  heatmap_gene = plotBambu(seGene.multiSample, type = "heatmap", group.variable="groupVar"),
   pca = plotBambu(se.multiSample, type = "pca"),
-  pca_grouped = plotBambu(se.multiSample, type = "pca", group.variable = "group")
+  pca_grouped = plotBambu(se.multiSample, type = "pca", group.variable = "groupVar")
 )
 
 # Use lapply to iterate and save each plot with its corresponding name
