@@ -8,3 +8,4 @@ test/
 testing*
 *.pyc
 encode/
+ebi/

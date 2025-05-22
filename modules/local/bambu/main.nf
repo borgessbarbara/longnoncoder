@@ -1,6 +1,6 @@
 process BAMBU {
     tag "Running Bambu"
-    label 'process_medium'
+    label 'process_high_memory'
 
     // Note: the versions here need to match the versions used in the mulled container below and minimap2/index
     conda "${moduleDir}/environment.yml"
