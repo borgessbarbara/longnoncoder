@@ -4,14 +4,15 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { MULTIQC                   } from '../modules/nf-core/multiqc/main'
-include { QC_FILT                   } from '../subworkflows/local/qc'
-include { ALIGNMENT                 } from '../subworkflows/local/alignment'
-include { TRANSCRIPT_RECONSTRUCTION } from '../subworkflows/local/transcript_reconstruction'
-include { paramsSummaryMap          } from 'plugin/nf-validation'
-include { paramsSummaryMultiqc      } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML    } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText    } from '../subworkflows/local/utils_nfcore_longnoncoder_pipeline'
+include { MULTIQC                           } from '../modules/nf-core/multiqc/main'
+include { QC_FILT                           } from '../subworkflows/local/qc'
+include { ALIGNMENT                         } from '../subworkflows/local/alignment'
+include { TRANSCRIPT_RECONSTRUCTION         } from '../subworkflows/local/transcript_reconstruction'
+include { CLASSIFICATION_POTENTIAL_CODING   } from '../subworkflows/local/classification_codingpotential.nf'
+include { paramsSummaryMap                  } from 'plugin/nf-validation'
+include { paramsSummaryMultiqc              } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML            } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText            } from '../subworkflows/local/utils_nfcore_longnoncoder_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,9 +27,9 @@ workflow LONGNONCODER {
 
     main:
 
-    ch_versions = Channel.empty()
-    ch_multiqc_files = Channel.empty()
-    ch_bamlist = Channel.empty()
+    ch_versions             = Channel.empty()
+    ch_multiqc_files        = Channel.empty()
+    ch_gtf_new_transcripts  = Channel.empty()
 
     //
     //Run QC workflow
@@ -54,9 +55,16 @@ workflow LONGNONCODER {
         params.annotation
     )
 
-    TRANSCRIPT_RECONSTRUCTION.out.bamlist
-        .set { ch_bamlist }
+    TRANSCRIPT_RECONSTRUCTION.out.gtf_new_transcripts
+        .set { ch_gtf_new_transcripts }
 
+    if (!params.skip_class){
+        CLASSIFICATION_POTENTIAL_CODING (
+            ch_gtf_new_transcripts,
+            params.annotation,
+            params.reference
+        )
+    }
     //
     // Collate and save software versions
     //

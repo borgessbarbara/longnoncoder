@@ -336,6 +336,12 @@
         "annotation": {
             "type": "string",
             "description": "GTF file for reference genome"
+        },
+        "skip_class": {
+            "type": "boolean"
+        },
+        "organism": {
+            "type": "string"
         }
     }
 }

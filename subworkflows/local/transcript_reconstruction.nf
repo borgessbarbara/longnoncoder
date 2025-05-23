@@ -12,6 +12,7 @@ workflow TRANSCRIPT_RECONSTRUCTION {
     ch_samp_info         = Channel.empty()
     ch_reference         = Channel.empty()
     ch_annotation        = Channel.empty()
+    ch_assembled_gtf     = Channel.empty()
     ch_multiqc_all       = Channel.empty()
 
     // Setting channel for the reference
@@ -51,10 +52,14 @@ workflow TRANSCRIPT_RECONSTRUCTION {
         ch_samp_info
     )
 
+    BAMBU.out.gtf_new_transcripts
+        .set { ch_assembled_gtf }
+
 
     emit:
     //multiqc = ch_multiqc_all
     //versions = ch_versions
+    gtf_new_transcripts = ch_assembled_gtf
     bamlist = ch_bamlist
     samp_info = ch_samp_info
     reference = ch_reference
