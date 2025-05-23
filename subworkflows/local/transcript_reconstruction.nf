@@ -55,10 +55,12 @@ workflow TRANSCRIPT_RECONSTRUCTION {
     BAMBU.out.gtf_new_transcripts
         .set { ch_assembled_gtf }
 
+    ch_versions = ch_versions.mix(BAMBU.out.versions.first().ifEmpty(null))
+
 
     emit:
     //multiqc = ch_multiqc_all
-    //versions = ch_versions
+    versions = ch_versions
     gtf_new_transcripts = ch_assembled_gtf
     bamlist = ch_bamlist
     samp_info = ch_samp_info

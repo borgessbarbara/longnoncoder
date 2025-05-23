@@ -39,14 +39,18 @@ workflow LONGNONCODER {
             ch_samplesheet
         )
         ch_multiqc_files = ch_multiqc_files.mix(QC_FILT.out.multiqc)
-        ch_versions = ch_versions.mix(QC_FILT.out.versions.first())
+        ch_versions = ch_versions.mix(QC_FILT.out.versions)
     }
     //
     // Run alignment workflow
     //
     if (!params.skip_alignment){
         ALIGNMENT(QC_FILT.out.filt_reads)
-        ch_versions = ch_versions.mix(ALIGNMENT.out.versions.first())
+
+        if (!params.skip_alignment_qc){
+            ch_multiqc_files = ch_multiqc_files.mix(ALIGNMENT.out.multiqc)
+        } 
+        ch_versions = ch_versions.mix(ALIGNMENT.out.versions)
     }
 
     TRANSCRIPT_RECONSTRUCTION (
@@ -57,6 +61,8 @@ workflow LONGNONCODER {
 
     TRANSCRIPT_RECONSTRUCTION.out.gtf_new_transcripts
         .set { ch_gtf_new_transcripts }
+    
+    ch_versions = ch_versions.mix(TRANSCRIPT_RECONSTRUCTION.out.versions)
 
     if (!params.skip_class){
         CLASSIFICATION_POTENTIAL_CODING (
@@ -64,6 +70,7 @@ workflow LONGNONCODER {
             params.annotation,
             params.reference
         )
+        ch_versions = ch_versions.mix(CLASSIFICATION_POTENTIAL_CODING.out.versions)
     }
     //
     // Collate and save software versions
@@ -90,7 +97,9 @@ workflow LONGNONCODER {
         ch_multiqc_files.collect(),
         ch_multiqc_config.toList(),
         ch_multiqc_custom_config.toList(),
-        ch_multiqc_logo.toList()
+        ch_multiqc_logo.toList(),
+        [],
+        []
     )
 
     emit:

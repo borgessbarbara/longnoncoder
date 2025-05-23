@@ -38,18 +38,19 @@ workflow QC_FILT {
      NANOCOMP_RAW_BOX(ch_combined_raw) 
      
 
-     ch_versions = ch_versions.mix(NANOCOMP_RAW_BOX.out.versions.first().ifEmpty(null))
+     ch_versions = ch_versions.mix(NANOCOMP_RAW_BOX.out.versions)
 
     // Running fastqc on pre-filtered dataset
     FASTQC_RAW(ch_reads)
 
-    ch_versions = ch_versions.mix(FASTQC_RAW.out.versions.first().ifEmpty(null))
+    ch_versions = ch_versions.mix(FASTQC_RAW.out.versions)
    
 
     // Generating a multiqc file for raw reads report
 
     // ch_multiqc_raw = ch_multiqc_raw.mix(RAW_NANOCOMP.out.zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_raw = ch_multiqc_raw.mix(FASTQC_RAW.out.zip.collect{it[1]}.ifEmpty([]))   
+    ch_multiqc_raw = ch_multiqc_raw.mix(NANOCOMP_RAW_BOX.out.stats_txt.collect{it[1]}.ifEmpty([]))   
     
     ch_multiqc_all = ch_multiqc_all.mix(ch_multiqc_raw.ifEmpty([]))
 
@@ -58,7 +59,7 @@ workflow QC_FILT {
 
     CHOPPER(ch_reads, [])
 
-    ch_versions = ch_versions.mix(CHOPPER.out.versions.first().ifEmpty(null))
+    ch_versions = ch_versions.mix(CHOPPER.out.versions)
     
     //Running quality check in filtered reads
     CHOPPER.out.fastq
@@ -73,6 +74,7 @@ workflow QC_FILT {
 
     //ch_multiqc_filt = ch_multiqc_filt.mix(FILT_NANOCOMP.out.zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_filt = ch_multiqc_filt.mix(FASTQC_FILT.out.zip.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_filt = ch_multiqc_filt.mix(NANOCOMP_FILT_BOX.out.stats_txt.collect{it[1]}.ifEmpty([]))
 
     ch_multiqc_all = ch_multiqc_all.mix(ch_multiqc_filt.ifEmpty([]))
 
