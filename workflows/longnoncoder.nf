@@ -51,18 +51,18 @@ workflow LONGNONCODER {
             ch_multiqc_files = ch_multiqc_files.mix(ALIGNMENT.out.multiqc)
         } 
         ch_versions = ch_versions.mix(ALIGNMENT.out.versions)
+
+        TRANSCRIPT_RECONSTRUCTION (
+            ALIGNMENT.out.bam,
+            params.reference,
+            params.annotation
+        )
+
+        TRANSCRIPT_RECONSTRUCTION.out.gtf_new_transcripts
+            .set { ch_gtf_new_transcripts }
+        
+        ch_versions = ch_versions.mix(TRANSCRIPT_RECONSTRUCTION.out.versions)
     }
-
-    TRANSCRIPT_RECONSTRUCTION (
-        ALIGNMENT.out.bam,
-        params.reference,
-        params.annotation
-    )
-
-    TRANSCRIPT_RECONSTRUCTION.out.gtf_new_transcripts
-        .set { ch_gtf_new_transcripts }
-    
-    ch_versions = ch_versions.mix(TRANSCRIPT_RECONSTRUCTION.out.versions)
 
     if (!params.skip_class){
         CLASSIFICATION_POTENTIAL_CODING (

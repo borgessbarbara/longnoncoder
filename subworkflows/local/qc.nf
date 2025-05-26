@@ -4,8 +4,6 @@
 
 include { NANOCOMP as NANOCOMP_RAW_BOX      } from '../../modules/local/nanocomp/main'
 include { NANOCOMP as NANOCOMP_FILT_BOX     } from '../../modules/local/nanocomp/main'
-include { FASTQC as FASTQC_RAW              } from '../../modules/nf-core/fastqc/main'
-include { FASTQC as FASTQC_FILT             } from '../../modules/nf-core/fastqc/main'
 include { CHOPPER                           } from '../../modules/nf-core/chopper/main'
 
 /*
@@ -17,8 +15,8 @@ include { CHOPPER                           } from '../../modules/nf-core/choppe
 
 workflow QC_FILT {
     take:
-        reads       
-     
+        reads
+
     main:
      ch_versions          = Channel.empty()
      ch_multiqc_raw       = Channel.empty()
@@ -29,29 +27,22 @@ workflow QC_FILT {
      ch_reads             = reads
 
     // Running nanocomp on raw reads
-     
+
      ch_reads
              .collect {it[1]}
              .map {filelist -> [[id:"All"],filelist]}
              .set {ch_combined_raw}
-             
-     NANOCOMP_RAW_BOX(ch_combined_raw) 
-     
+
+     NANOCOMP_RAW_BOX(ch_combined_raw)
+
 
      ch_versions = ch_versions.mix(NANOCOMP_RAW_BOX.out.versions)
-
-    // Running fastqc on pre-filtered dataset
-    FASTQC_RAW(ch_reads)
-
-    ch_versions = ch_versions.mix(FASTQC_RAW.out.versions)
-   
 
     // Generating a multiqc file for raw reads report
 
     // ch_multiqc_raw = ch_multiqc_raw.mix(RAW_NANOCOMP.out.zip.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_raw = ch_multiqc_raw.mix(FASTQC_RAW.out.zip.collect{it[1]}.ifEmpty([]))   
-    ch_multiqc_raw = ch_multiqc_raw.mix(NANOCOMP_RAW_BOX.out.stats_txt.collect{it[1]}.ifEmpty([]))   
-    
+    ch_multiqc_raw = ch_multiqc_raw.mix(NANOCOMP_RAW_BOX.out.stats_txt.collect{it[1]}.ifEmpty([]))
+
     ch_multiqc_all = ch_multiqc_all.mix(ch_multiqc_raw.ifEmpty([]))
 
     //Putting conditional to whether fun filtering on samples
@@ -60,7 +51,7 @@ workflow QC_FILT {
     CHOPPER(ch_reads, [])
 
     ch_versions = ch_versions.mix(CHOPPER.out.versions)
-    
+
     //Running quality check in filtered reads
     CHOPPER.out.fastq
              .collect {it[1]}
@@ -69,11 +60,7 @@ workflow QC_FILT {
 
     NANOCOMP_FILT_BOX(ch_combined_filtered)
 
-    // fastqc
-    FASTQC_FILT(CHOPPER.out.fastq)
-
     //ch_multiqc_filt = ch_multiqc_filt.mix(FILT_NANOCOMP.out.zip.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_filt = ch_multiqc_filt.mix(FASTQC_FILT.out.zip.collect{it[1]}.ifEmpty([]))
     ch_multiqc_filt = ch_multiqc_filt.mix(NANOCOMP_FILT_BOX.out.stats_txt.collect{it[1]}.ifEmpty([]))
 
     ch_multiqc_all = ch_multiqc_all.mix(ch_multiqc_filt.ifEmpty([]))
