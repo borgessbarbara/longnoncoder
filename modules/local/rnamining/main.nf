@@ -7,7 +7,7 @@ process RNAMINING {
         'biocontainers/rnamining:1.0.4--pyhdfd78af_0' }"
 
     input:
-    path fasta
+    val fasta
 
     output:
     path '*.txt'        , emit: preds
