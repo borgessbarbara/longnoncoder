@@ -10,8 +10,8 @@ process BAMBU {
 
     input:
     val bam_list
-    val reference
-    val annotation
+    path reference
+    path annotation
     val sample_info
 
 

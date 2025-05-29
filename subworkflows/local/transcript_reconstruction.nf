@@ -15,15 +15,21 @@ workflow TRANSCRIPT_RECONSTRUCTION {
     ch_assembled_gtf     = Channel.empty()
     ch_multiqc_all       = Channel.empty()
 
+    
+
     // Setting channel for the reference
-    Channel
-    .fromPath(reference) // Replace with your file pattern
-    .set {ch_reference}
+    ch_reference = Channel.fromPath(reference, checkIfExists: true)
+    ch_annotation = Channel.fromPath(annotation, checkIfExists: true)
+
+     
+    //Channel
+    //.fromPath(reference) // Replace with your file pattern
+    //.set {ch_reference}
 
     // Setting channel for the annotation
-    Channel
-    .fromPath(annotation) // Replace with your file pattern
-    .set {ch_annotation}
+    //Channel
+    //.fromPath(annotation) // Replace with your file pattern
+    //.set {ch_annotation}
 
     // Setting TSV file with sample information
     bams
