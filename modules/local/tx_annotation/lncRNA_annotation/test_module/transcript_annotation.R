@@ -27,30 +27,12 @@ option_list <- list(
                 help="Path to Bambu GTF annotations file", metavar="character"),
     make_option(c("--prefix"), type="character", default="sample",
                 help="Output prefix [default= %default]", metavar="character"),
-    make_option(c("--ensembl_version"), type="integer", default=113,
+    make_option(c("--ensembl_version"), type="integer", default=114,
                 help="Ensembl version to use [default= %default]", metavar="integer")
 )
 
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
-
-# transcript_annotation.R
-
-opt <- list(
-  transcript_counts = "test_data/BambuOutput_counts_transcript.txt",
-  gene_counts       = "test_data/BambuOutput_counts_gene.txt",
-  gtf_file          = "test_data/BambuOutput_extended_annotations.gtf",
-  prefix            = "test_sample",
-  ensembl_version   = 113
-)
-
-# Exemplo de uso do objeto opt
-cat("Transcript counts file:", opt$transcript_counts, "\n")
-cat("Gene counts file:", opt$gene_counts, "\n")
-cat("GTF file:", opt$gtf_file, "\n")
-cat("Prefix:", opt$prefix, "\n")
-cat("Ensembl version:", opt$ensembl_version, "\n")
-
 
 # Check required arguments
 if (is.null(opt$transcript_counts) || is.null(opt$gene_counts) || is.null(opt$gtf_file)) {
