@@ -34,6 +34,24 @@ option_list <- list(
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
 
+# transcript_annotation.R
+
+opt <- list(
+  transcript_counts = "test_data/BambuOutput_counts_transcript.txt",
+  gene_counts       = "test_data/BambuOutput_counts_gene.txt",
+  gtf_file          = "test_data/BambuOutput_extended_annotations.gtf",
+  prefix            = "test_sample",
+  ensembl_version   = 113
+)
+
+# Exemplo de uso do objeto opt
+cat("Transcript counts file:", opt$transcript_counts, "\n")
+cat("Gene counts file:", opt$gene_counts, "\n")
+cat("GTF file:", opt$gtf_file, "\n")
+cat("Prefix:", opt$prefix, "\n")
+cat("Ensembl version:", opt$ensembl_version, "\n")
+
+
 # Check required arguments
 if (is.null(opt$transcript_counts) || is.null(opt$gene_counts) || is.null(opt$gtf_file)) {
     print_help(opt_parser)
@@ -54,8 +72,7 @@ cat(paste("Found", length(ens_ids), "Ensembl transcript IDs\n"))
 # Apply biomaRt to gather metadata
 cat("Connecting to Ensembl biomaRt...\n")
 
-ensembl <- useEnsembl(biomart="genes", dataset="hsapiens_gene_ensembl",
-                      version=opt$ensembl_version)
+ensembl <- useEnsembl(biomart="genes", dataset="hsapiens_gene_ensembl")
 
 attributes <- c("chromosome_name","ensembl_gene_id", "ensembl_transcript_id",
                 "external_transcript_name","external_gene_name", "strand",
@@ -65,7 +82,17 @@ attributes <- c("chromosome_name","ensembl_gene_id", "ensembl_transcript_id",
 filters <- "ensembl_transcript_id"
 
 cat("Retrieving transcript metadata from biomaRt...\n")
-ens_tx <- getBM(attributes=attributes, filters=filters, values=ens_ids, mart=ensembl)
+
+# Clean Ensembl transcript IDs (remove version if present)
+if (any(grepl("\\.", ens_ids))) {
+  ens_ids_clean <- sub("\\..*$", "", ens_ids)
+  warning("Transcript IDs contained version suffix (e.g., .1, .2). Versions were removed for Ensembl query.")
+} else {
+  ens_ids_clean <- ens_ids
+  message("Transcript IDs did not contain version suffix. Using as is.")
+}
+
+ens_tx <- getBM(attributes=attributes, filters=filters, values=ens_ids_clean, mart=ensembl)
 
 # Fix strand notation
 ens_tx$strand <- ifelse(ens_tx$strand=="-1", "-", "+")
@@ -180,6 +207,18 @@ if (length(ens_pc_ids) > 0) {
 cat("Processing GTF files and counts...\n")
 gtf <- import(opt$gtf_file)
 
+# Remover versão de transcript_id e gene_id se existir
+if ("transcript_id" %in% colnames(mcols(gtf))) {
+  gtf$transcript_id <- sub("\\..*$", "", gtf$transcript_id)
+  warning("Transcript IDs in GTF contained version suffix. Versions were removed.")
+}
+
+if ("gene_id" %in% colnames(mcols(gtf))) {
+  gtf$gene_id <- sub("\\..*$", "", gtf$gene_id)
+  warning("Gene IDs in GTF contained version suffix. Versions were removed.")
+}
+
+# Agora pode continuar normalmente
 tx_ids <- ens_tx$ensembl_transcript_id
 lnc_ids <- ens_lnc$ensembl_transcript_id
 pc_ids <- ens_pc$ensembl_transcript_id
@@ -226,3 +265,4 @@ write.csv(ann_gn_counts, "bambu_annotated_transcriptome_gene_counts.csv", row.na
 cat("Written bambu_annotated_transcriptome_gene_counts.csv\n")
 
 cat("Transcript annotation analysis completed successfully!\n")
+
