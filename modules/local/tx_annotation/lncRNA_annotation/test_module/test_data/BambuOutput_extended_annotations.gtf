@@ -1,0 +1,27 @@
+##gff-version 2
+##source-version bambu 3.0.0
+1	bambu	transcript	11869	14409	1000	+	.	gene_id "ENSG00000223972.5"; transcript_id "ENST00000456328.2"; gene_name "DDX11L1"; gene_type "transcribed_unprocessed_pseudogene"; transcript_type "processed_transcript";
+1	bambu	exon	11869	12227	1000	+	.	gene_id "ENSG00000223972.5"; transcript_id "ENST00000456328.2"; gene_name "DDX11L1"; gene_type "transcribed_unprocessed_pseudogene"; transcript_type "processed_transcript";
+1	bambu	exon	12613	12721	1000	+	.	gene_id "ENSG00000223972.5"; transcript_id "ENST00000456328.2"; gene_name "DDX11L1"; gene_type "transcribed_unprocessed_pseudogene"; transcript_type "processed_transcript";
+1	bambu	exon	13221	14409	1000	+	.	gene_id "ENSG00000223972.5"; transcript_id "ENST00000456328.2"; gene_name "DDX11L1"; gene_type "transcribed_unprocessed_pseudogene"; transcript_type "processed_transcript";
+1	bambu	transcript	14404	29570	1000	-	.	gene_id "ENSG00000227232.5"; transcript_id "ENST00000450305.2"; gene_name "WASH7P"; gene_type "unprocessed_pseudogene"; transcript_type "unprocessed_pseudogene";
+1	bambu	exon	14404	14501	1000	-	.	gene_id "ENSG00000227232.5"; transcript_id "ENST00000450305.2"; gene_name "WASH7P"; gene_type "unprocessed_pseudogene"; transcript_type "unprocessed_pseudogene";
+1	bambu	exon	15005	15038	1000	-	.	gene_id "ENSG00000227232.5"; transcript_id "ENST00000450305.2"; gene_name "WASH7P"; gene_type "unprocessed_pseudogene"; transcript_type "unprocessed_pseudogene";
+1	bambu	exon	15796	15947	1000	-	.	gene_id "ENSG00000227232.5"; transcript_id "ENST00000450305.2"; gene_name "WASH7P"; gene_type "unprocessed_pseudogene"; transcript_type "unprocessed_pseudogene";
+1	bambu	transcript	17369	17436	1000	-	.	gene_id "ENSG00000278267.1"; transcript_id "ENST00000619216.1"; gene_name "MIR6859-1"; gene_type "miRNA"; transcript_type "miRNA";
+1	bambu	exon	17369	17436	1000	-	.	gene_id "ENSG00000278267.1"; transcript_id "ENST00000619216.1"; gene_name "MIR6859-1"; gene_type "miRNA"; transcript_type "miRNA";
+1	bambu	transcript	30366	30503	1000	+	.	gene_id "ENSG00000243485.5"; transcript_id "ENST00000473358.1"; gene_name "MIR1302-2HG"; gene_type "lncRNA"; transcript_type "lncRNA";
+1	bambu	exon	30366	30503	1000	+	.	gene_id "ENSG00000243485.5"; transcript_id "ENST00000473358.1"; gene_name "MIR1302-2HG"; gene_type "lncRNA"; transcript_type "lncRNA";
+1	bambu	transcript	34554	36081	1000	-	.	gene_id "ENSG00000237613.2"; transcript_id "ENST00000469289.1"; gene_name "FAM138A"; gene_type "lncRNA"; transcript_type "lncRNA";
+1	bambu	exon	34554	35174	1000	-	.	gene_id "ENSG00000237613.2"; transcript_id "ENST00000469289.1"; gene_name "FAM138A"; gene_type "lncRNA"; transcript_type "lncRNA";
+1	bambu	exon	35277	35481	1000	-	.	gene_id "ENSG00000237613.2"; transcript_id "ENST00000469289.1"; gene_name "FAM138A"; gene_type "lncRNA"; transcript_type "lncRNA";
+1	bambu	exon	35721	36081	1000	-	.	gene_id "ENSG00000237613.2"; transcript_id "ENST00000469289.1"; gene_name "FAM138A"; gene_type "lncRNA"; transcript_type "lncRNA";
+1	bambu	transcript	69091	70008	1000	+	.	gene_id "ENSG00000186092.6"; transcript_id "ENST00000488147.1"; gene_name "OR4F5"; gene_type "protein_coding"; transcript_type "protein_coding";
+1	bambu	exon	69091	70008	1000	+	.	gene_id "ENSG00000186092.6"; transcript_id "ENST00000488147.1"; gene_name "OR4F5"; gene_type "protein_coding"; transcript_type "protein_coding";
+1	bambu	transcript	89295	133723	1000	-	.	gene_id "ENSG00000238009.6"; transcript_id "ENST00000518655.2"; gene_name "RP11-34P13.7"; gene_type "protein_coding"; transcript_type "protein_coding";
+1	bambu	exon	89295	89551	1000	-	.	gene_id "ENSG00000238009.6"; transcript_id "ENST00000518655.2"; gene_name "RP11-34P13.7"; gene_type "protein_coding"; transcript_type "protein_coding";
+1	bambu	exon	129055	129223	1000	-	.	gene_id "ENSG00000238009.6"; transcript_id "ENST00000518655.2"; gene_name "RP11-34P13.7"; gene_type "protein_coding"; transcript_type "protein_coding";
+1	bambu	exon	133374	133723	1000	-	.	gene_id "ENSG00000238009.6"; transcript_id "ENST00000518655.2"; gene_name "RP11-34P13.7"; gene_type "protein_coding"; transcript_type "protein_coding";
+1	bambu	transcript	200000	250000	1000	+	.	gene_id "novel_gene_1"; transcript_id "novel_transcript_1"; gene_name "novel_gene_1"; gene_type "novel"; transcript_type "novel";
+1	bambu	exon	200000	200500	1000	+	.	gene_id "novel_gene_1"; transcript_id "novel_transcript_1"; gene_name "novel_gene_1"; gene_type "novel"; transcript_type "novel";
+1	bambu	exon	240000	250000	1000	+	.	gene_id "novel_gene_1"; transcript_id "novel_transcript_1"; gene_name "novel_gene_1"; gene_type "novel"; transcript_type "novel";
