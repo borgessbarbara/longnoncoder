@@ -1,6 +1,7 @@
 process RENDER_REPORT {
 
-    tag "Performing analysis moduleA"
+    tag "Rendering report"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'oras://community.wave.seqera.io/library/quarto_r-cowplot_r-knitr_r-rcolorbrewer_pruned:9183d70916f57fd4' : 'community.wave.seqera.io/library/quarto_r-cowplot_r-knitr_r-rcolorbrewer_pruned:a02cb51064eb0c90'}"
 
     input:
         path(notebook)
@@ -30,8 +31,8 @@ process RENDER_REPORT {
     output:
         path("*.html")                      , emit: report
         path("Bambu_assembly_summary.csv")  , emit: bambu_assembly_summary
-        path("*.png")                       , emit: generated_plots_png
-        path("*.pdf")                       , emit: generated_plots_pdf
+        // path("*.png")                       , emit: generated_plots_png
+        // path("*.pdf")                       , emit: generated_plots_pdf
 
     when:
         task.ext.when == null || task.ext.when
