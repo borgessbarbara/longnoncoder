@@ -39,6 +39,16 @@ process RENDER_REPORT {
 
     script:
         """
+        export XDG_CACHE_HOME=/tmp/quarto_cache_home
+        export XDG_DATA_HOME=/tmp/quarto_data_home
+
+        ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
+        set +u
+        if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
+            source "\${ENV_QUARTO}"
+        fi
+        set -u
+
         cp ${notebook} report.qmd
         quarto render report.qmd \\
             -P counts_genes:${counts_genes} \\
