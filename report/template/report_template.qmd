@@ -459,14 +459,21 @@ p18 <- ggplot(ann_pc_lnc_txome, aes(x = gene_biotype, y = transcript_length, fil
 ```
 
 ```{r}
-#| layout-ncol: 2
 #| fig-cap:
 #|   - "**Figure 11: Counts of Mono- vs. Multi-exonic Transcripts.** This plot shows the number of mono- and multi-exonic transcripts for each transcript biotype, separated by protein-coding and lncRNA gene categories."
-#|   - "**Figure 12: Length of Mono- vs. Multi-exonic Transcripts.** This boxplot compares the final transcript length of mono- and multi-exonic transcripts within the protein-coding and lncRNA categories."
+#| fig-width: 10
+#| fig-height: 10
 
 p16
+```
+
+```{r}
+#| fig-cap:
+#|   - "**Figure 12: Length of Mono- vs. Multi-exonic Transcripts.** This boxplot compares the final transcript length of mono- and multi-exonic transcripts within the protein-coding and lncRNA categories."
+
 p18
 ```
+
 
 #### Exon Number vs. Transcript Length
 
