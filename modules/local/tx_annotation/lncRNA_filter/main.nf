@@ -1,5 +1,5 @@
 process TRANSCRIPT_ANALYSIS {
-    tag "$meta.id"
+    tag "Report_Generation"
     label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -7,20 +7,25 @@ process TRANSCRIPT_ANALYSIS {
         'docker.io/lfreitasl/bambu:3.8.0' }"
 
     input:
-    tuple val(meta), path(bambu_gtf), path(compared_gtf), path(tmap_file), path(rnamining_predictions), path(tx_counts), path(gene_counts)
+    path bambu_gtf
+    path compared_gtf
+    path tmap_file
+    path rnamining_predictions
+    path tx_counts
+    path gene_counts
 
     output:
-    tuple val(meta), path("novel_transcripts_metadata.csv")          , emit: novel_transcripts_metadata
-    tuple val(meta), path("novel_lncRNAs_metadata.csv")              , emit: novel_lncrnas_metadata
-    tuple val(meta), path("novel_protein-coding_metadata.csv")       , emit: novel_mrnas_metadata
-    tuple val(meta), path("novel_pc_lnc_RNAs_metadata.csv")          , emit: novel_combined_metadata
-    tuple val(meta), path("novel_lncRNAs.gtf")                       , emit: novel_lncrnas_gtf
-    tuple val(meta), path("novel_protein-coding.gtf")                , emit: novel_mrnas_gtf
-    tuple val(meta), path("novel_lncRNA_exon_lengths.csv")           , emit: novel_lncrna_exon_lengths
-    tuple val(meta), path("novel_protein-coding_exon_lengths.csv")   , emit: novel_mrna_exon_lengths
-    tuple val(meta), path("bambu_novel_pc_lnc_RNA_tx_counts.csv")    , emit: novel_tx_counts
-    tuple val(meta), path("bambu_novel_pc_lnc_RNA_gene_counts.csv")  , emit: novel_gene_counts
-    path "versions.yml"                                              , emit: versions
+    path "novel_transcripts_metadata.csv"          , emit: novel_transcripts_metadata
+    path "novel_lncRNAs_metadata.csv"              , emit: novel_lncrnas_metadata
+    path "novel_protein-coding_metadata.csv"       , emit: novel_mrnas_metadata
+    path "novel_pc_lnc_RNAs_metadata.csv"          , emit: novel_combined_metadata
+    path "novel_lncRNAs.gtf"                       , emit: novel_lncrnas_gtf
+    path "novel_protein-coding.gtf"                , emit: novel_mrnas_gtf
+    path "novel_lncRNA_exon_lengths.csv"           , emit: novel_lncrna_exon_lengths
+    path "novel_protein-coding_exon_lengths.csv"   , emit: novel_mrna_exon_lengths
+    path "bambu_novel_pc_lnc_RNA_tx_counts.csv"    , emit: novel_tx_counts
+    path "bambu_novel_pc_lnc_RNA_gene_counts.csv"  , emit: novel_gene_counts
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +33,7 @@ process TRANSCRIPT_ANALYSIS {
     script:
     def args = task.ext.args ?: ''
     """
-    Rscript ${projectDir}/modules/local/transcript_analysis/transcript_analysis.R \\
+    lncRNA_filter.R \\
         --bambu_gtf ${bambu_gtf} \\
         --compared_gtf ${compared_gtf} \\
         --tmap_file ${tmap_file} \\

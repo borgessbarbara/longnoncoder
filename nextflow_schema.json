@@ -299,9 +299,6 @@
         "minlen": {
             "type": "integer"
         },
-        "maxlen": {
-            "type": "integer"
-        },
         "maxgc": {
             "type": "number"
         },
@@ -342,6 +339,13 @@
         },
         "organism": {
             "type": "string"
+        },
+        "report_template": {
+            "type": "string",
+            "default": "/pfs/10/project/bw24d008/pipelines/longnoncoder/assets/report_template.qmd"
+        },
+        "maxlen": {
+            "type": "integer"
         }
     }
 }

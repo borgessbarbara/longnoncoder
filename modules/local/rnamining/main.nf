@@ -10,7 +10,9 @@ process RNAMINING {
     val fasta
 
     output:
-    path '*.txt'        , emit: preds
+    path 'codings.txt'        , emit: coding
+    path 'noncodings.txt'     , emit: noncoding
+    path 'predictions.txt'    , emit: preds
 
     when:
     task.ext.when == null || task.ext.when

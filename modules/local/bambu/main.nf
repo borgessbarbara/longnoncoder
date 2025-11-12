@@ -16,8 +16,15 @@ process BAMBU {
 
 
     output:
-    path "*.png"                                         , emit: plots
-    path "*.txt"                                         , emit: bambu_report
+    path "heatmap_gene.png"                              , emit: h_gene
+    path "heatmap_transcript.png"                        , emit: h_transcript
+    path "pca_grouped.png"                               , emit: pca_grouped
+    path "pca.png"                                       , emit: pca
+    path "BambuOutput_counts_transcript.txt"             , emit: tx_counts
+    path "BambuOutput_counts_gene.txt"                   , emit: gene_counts
+    path "BambuOutput_CPM_transcript.txt"                , emit: CPM
+    path "BambuOutput_fullLengthCounts_transcript.txt"   , emit: full_length
+    path "BambuOutput_uniqueCounts_transcript.txt"       , emit: unique_counts
     path "bambu_novel_transcripts.gtf"                   , emit: gtf_new_transcripts
     path "BambuOutput_extended_annotations.gtf"          , emit: gtf_all_transcripts
     path "*.rds"                                         , emit: rds

@@ -5,6 +5,12 @@
 */
 
 include { MULTIQC                           } from '../modules/nf-core/multiqc/main'
+include { TRANSCRIPT_ANALYSIS               } from '../modules/local/tx_annotation/lncRNA_filter/main'
+include { SUBSET_BAMBU_COUNTS               } from '../modules/local/tx_annotation/lncRNA_subset_counts/main'
+include { SUBSET_BAMBU_GTF                  } from '../modules/local/tx_annotation/lncRNA_subset_gtf/main'
+include { BAMBU_VALIDATE                    } from '../modules/local/tx_annotation/lncRNA_validate_novel/main'
+include { KNOWN_TRANSCRIPTS                 } from '../modules/local/tx_annotation/lncRNA_known_transcripts/main'
+include { RENDER_REPORT                     } from '../modules/local/report/main'
 include { QC_FILT                           } from '../subworkflows/local/qc'
 include { ALIGNMENT                         } from '../subworkflows/local/alignment'
 include { TRANSCRIPT_RECONSTRUCTION         } from '../subworkflows/local/transcript_reconstruction'
@@ -72,6 +78,66 @@ workflow LONGNONCODER {
         )
         ch_versions = ch_versions.mix(CLASSIFICATION_POTENTIAL_CODING.out.versions)
     }
+
+    SUBSET_BAMBU_COUNTS (
+        TRANSCRIPT_RECONSTRUCTION.out.gene_counts,
+        TRANSCRIPT_RECONSTRUCTION.out.transcript_counts,
+        TRANSCRIPT_RECONSTRUCTION.out.CPM,
+        TRANSCRIPT_RECONSTRUCTION.out.full_length,
+        TRANSCRIPT_RECONSTRUCTION.out.unique_counts
+    )
+
+    TRANSCRIPT_ANALYSIS (
+        ch_gtf_new_transcripts,
+        CLASSIFICATION_POTENTIAL_CODING.out.annotated_gtf,
+        CLASSIFICATION_POTENTIAL_CODING.out.tmap,
+        CLASSIFICATION_POTENTIAL_CODING.out.predictions,
+        SUBSET_BAMBU_COUNTS.out.counts_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.counts_gene_filtered
+    )
+
+    BAMBU_VALIDATE (
+        TRANSCRIPT_ANALYSIS.out.novel_combined_metadata,
+        SUBSET_BAMBU_COUNTS.out.counts_gene_filtered,
+        SUBSET_BAMBU_COUNTS.out.counts_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.cpm_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.full_length_counts_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.unique_counts_transcript_filtered
+    )
+
+    KNOWN_TRANSCRIPTS (
+        BAMBU_VALIDATE.out.counts_transcript_validated,
+        BAMBU_VALIDATE.out.counts_gene_validated,
+        TRANSCRIPT_RECONSTRUCTION.out.gtf_all_transcripts
+    )
+
+    SUBSET_BAMBU_GTF (
+        TRANSCRIPT_RECONSTRUCTION.out.gtf_all_transcripts,
+        BAMBU_VALIDATE.out.counts_transcript_validated,
+        BAMBU_VALIDATE.out.full_length_counts_transcript_validated,
+        BAMBU_VALIDATE.out.unique_counts_transcript_validated
+    )
+
+    RENDER_REPORT (
+        params.report_template,
+        BAMBU_VALIDATE.out.counts_gene_validated,
+        BAMBU_VALIDATE.out.counts_transcript_validated,
+        BAMBU_VALIDATE.out.full_length_counts_transcript_validated,
+        BAMBU_VALIDATE.out.unique_counts_transcript_validated,
+        KNOWN_TRANSCRIPTS.out.transcriptome_metadata,
+        KNOWN_TRANSCRIPTS.out.protein_coding_metadata,
+        KNOWN_TRANSCRIPTS.out.lncrna_metadata,
+        KNOWN_TRANSCRIPTS.out.protein_coding_exonlength,
+        KNOWN_TRANSCRIPTS.out.lncrna_exonlength,
+        TRANSCRIPT_ANALYSIS.out.novel_combined_metadata,
+        TRANSCRIPT_ANALYSIS.out.novel_lncrna_exon_lengths,
+        TRANSCRIPT_ANALYSIS.out.novel_mrna_exon_lengths,
+        TRANSCRIPT_RECONSTRUCTION.out.h_gene,
+        TRANSCRIPT_RECONSTRUCTION.out.h_transcript,
+        TRANSCRIPT_RECONSTRUCTION.out.pca,
+        TRANSCRIPT_RECONSTRUCTION.out.pca_grouped
+    )
+
     //
     // Collate and save software versions
     //
