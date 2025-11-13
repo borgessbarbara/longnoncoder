@@ -1,9 +1,0 @@
-sample,cell_line,fastq
-GM12878_1,GM12878,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073156_SRR9304712.fastq.gz
-GM12878_2,GM12878,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073157_SRR9304713.fastq.gz
-GM12878_3,GM12878,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073158_SRR9304714.fastq.gz
-HepG2_1,HepG2,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073159_SRR9304715.fastq.gz
-HepG2_2,HepG2,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073160_SRR9304716.fastq.gz
-HepG2_3,HepG2,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073161_SRR9304717.fastq.gz
-K562_1,K562,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073162_SRR9304718.fastq.gz
-K562_2,K562,/pfs/10/project/bw24d008/pipelines/data_babi/results/fastq/SRX6073163_SRR9304719.fastq.gz

@@ -5,11 +5,11 @@
 */
 
 include { MULTIQC                           } from '../modules/nf-core/multiqc/main'
-include { TRANSCRIPT_ANALYSIS               } from '../modules/local/tx_annotation/lncRNA_filter/main'
-include { SUBSET_BAMBU_COUNTS               } from '../modules/local/tx_annotation/lncRNA_subset_counts/main'
-include { SUBSET_BAMBU_GTF                  } from '../modules/local/tx_annotation/lncRNA_subset_gtf/main'
-include { BAMBU_VALIDATE                    } from '../modules/local/tx_annotation/lncRNA_validate_novel/main'
-include { KNOWN_TRANSCRIPTS                 } from '../modules/local/tx_annotation/lncRNA_known_transcripts/main'
+include { TRANSCRIPT_ANALYSIS               } from '../modules/local/tx_annotation/novel_transcripts/main'
+include { SUBSET_BAMBU_COUNTS               } from '../modules/local/tx_annotation/subset_counts/main'
+include { SUBSET_BAMBU_GTF                  } from '../modules/local/tx_annotation/subset_gtf/main'
+include { BAMBU_VALIDATE                    } from '../modules/local/tx_annotation/validate_novel/main'
+include { KNOWN_TRANSCRIPTS                 } from '../modules/local/tx_annotation/known_transcripts/main'
 include { RENDER_REPORT                     } from '../modules/local/report/main'
 include { QC_FILT                           } from '../subworkflows/local/qc'
 include { ALIGNMENT                         } from '../subworkflows/local/alignment'
