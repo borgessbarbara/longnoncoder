@@ -66,7 +66,7 @@ params:
     protein_coding_exonlength: "annotated_protein-coding_exonlength.csv"
     lncrna_exonlength: "annotated_lncRNAs_exonlength.csv"
     novel_lncrna_meta: "novel_pc_lnc_RNAs_metadata.csv"
-    novel_lncrna_exonnlength: "novel_lncRNA_exon_lengths.csv"
+    novel_lncrna_exonlength: "novel_lncRNA_exon_lengths.csv"
     novel_protein_coding_exonlength: "novel_protein-coding_exon_lengths.csv"
     plot_heatmap_gene: "heatmap_gene.png"
     plot_heatmap_tcpt: "heatmap_transcript.png"
