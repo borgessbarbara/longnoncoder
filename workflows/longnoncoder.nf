@@ -4,13 +4,21 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { QC_FILT                } from '../subworkflows/local/qc'
-include { ALIGNMENT              } from '../subworkflows/local/alignment'
-include { paramsSummaryMap       } from 'plugin/nf-validation'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_longnoncoder_pipeline'
+include { MULTIQC                           } from '../modules/nf-core/multiqc/main'
+include { TRANSCRIPT_ANALYSIS               } from '../modules/local/tx_annotation/novel_transcripts/main'
+include { SUBSET_BAMBU_COUNTS               } from '../modules/local/tx_annotation/subset_counts/main'
+include { SUBSET_BAMBU_GTF                  } from '../modules/local/tx_annotation/subset_gtf/main'
+include { BAMBU_VALIDATE                    } from '../modules/local/tx_annotation/validate_novel/main'
+include { KNOWN_TRANSCRIPTS                 } from '../modules/local/tx_annotation/known_transcripts/main'
+include { RENDER_REPORT                     } from '../modules/local/report/main'
+include { QC_FILT                           } from '../subworkflows/local/qc'
+include { ALIGNMENT                         } from '../subworkflows/local/alignment'
+include { TRANSCRIPT_RECONSTRUCTION         } from '../subworkflows/local/transcript_reconstruction'
+include { CLASSIFICATION_POTENTIAL_CODING   } from '../subworkflows/local/classification_codingpotential.nf'
+include { paramsSummaryMap                  } from 'plugin/nf-validation'
+include { paramsSummaryMultiqc              } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML            } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText            } from '../subworkflows/local/utils_nfcore_longnoncoder_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,8 +33,9 @@ workflow LONGNONCODER {
 
     main:
 
-    ch_versions = Channel.empty()
-    ch_multiqc_files = Channel.empty()
+    ch_versions             = Channel.empty()
+    ch_multiqc_files        = Channel.empty()
+    ch_gtf_new_transcripts  = Channel.empty()
 
     //
     //Run QC workflow
@@ -36,15 +45,99 @@ workflow LONGNONCODER {
             ch_samplesheet
         )
         ch_multiqc_files = ch_multiqc_files.mix(QC_FILT.out.multiqc)
-        ch_versions = ch_versions.mix(QC_FILT.out.versions.first())
+        ch_versions = ch_versions.mix(QC_FILT.out.versions)
     }
     //
     // Run alignment workflow
     //
     if (!params.skip_alignment){
         ALIGNMENT(QC_FILT.out.filt_reads)
-        ch_versions = ch_versions.mix(ALIGNMENT.out.versions.first())
+
+        if (!params.skip_alignment_qc){
+            ch_multiqc_files = ch_multiqc_files.mix(ALIGNMENT.out.multiqc)
+        } 
+        ch_versions = ch_versions.mix(ALIGNMENT.out.versions)
+
+        TRANSCRIPT_RECONSTRUCTION (
+            ALIGNMENT.out.bam,
+            params.reference,
+            params.annotation
+        )
+
+        TRANSCRIPT_RECONSTRUCTION.out.gtf_new_transcripts
+            .set { ch_gtf_new_transcripts }
+        
+        ch_versions = ch_versions.mix(TRANSCRIPT_RECONSTRUCTION.out.versions)
     }
+
+    if (!params.skip_class){
+        CLASSIFICATION_POTENTIAL_CODING (
+            ch_gtf_new_transcripts,
+            params.annotation,
+            params.reference
+        )
+        ch_versions = ch_versions.mix(CLASSIFICATION_POTENTIAL_CODING.out.versions)
+    }
+
+    SUBSET_BAMBU_COUNTS (
+        TRANSCRIPT_RECONSTRUCTION.out.gene_counts,
+        TRANSCRIPT_RECONSTRUCTION.out.transcript_counts,
+        TRANSCRIPT_RECONSTRUCTION.out.CPM,
+        TRANSCRIPT_RECONSTRUCTION.out.full_length,
+        TRANSCRIPT_RECONSTRUCTION.out.unique_counts
+    )
+
+    TRANSCRIPT_ANALYSIS (
+        ch_gtf_new_transcripts,
+        CLASSIFICATION_POTENTIAL_CODING.out.annotated_gtf,
+        CLASSIFICATION_POTENTIAL_CODING.out.tmap,
+        CLASSIFICATION_POTENTIAL_CODING.out.predictions,
+        SUBSET_BAMBU_COUNTS.out.counts_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.counts_gene_filtered
+    )
+
+    BAMBU_VALIDATE (
+        TRANSCRIPT_ANALYSIS.out.novel_combined_metadata,
+        SUBSET_BAMBU_COUNTS.out.counts_gene_filtered,
+        SUBSET_BAMBU_COUNTS.out.counts_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.cpm_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.full_length_counts_transcript_filtered,
+        SUBSET_BAMBU_COUNTS.out.unique_counts_transcript_filtered
+    )
+
+    KNOWN_TRANSCRIPTS (
+        BAMBU_VALIDATE.out.counts_transcript_validated,
+        BAMBU_VALIDATE.out.counts_gene_validated,
+        TRANSCRIPT_RECONSTRUCTION.out.gtf_all_transcripts
+    )
+
+    SUBSET_BAMBU_GTF (
+        TRANSCRIPT_RECONSTRUCTION.out.gtf_all_transcripts,
+        BAMBU_VALIDATE.out.counts_transcript_validated,
+        BAMBU_VALIDATE.out.full_length_counts_transcript_validated,
+        BAMBU_VALIDATE.out.unique_counts_transcript_validated
+    )
+
+    RENDER_REPORT (
+        params.report_template,
+        BAMBU_VALIDATE.out.counts_gene_validated,
+        BAMBU_VALIDATE.out.counts_transcript_validated,
+        BAMBU_VALIDATE.out.full_length_counts_transcript_validated,
+        BAMBU_VALIDATE.out.unique_counts_transcript_validated,
+        KNOWN_TRANSCRIPTS.out.transcriptome_metadata,
+        KNOWN_TRANSCRIPTS.out.protein_coding_metadata,
+        KNOWN_TRANSCRIPTS.out.lncrna_metadata,
+        KNOWN_TRANSCRIPTS.out.protein_coding_exonlength,
+        KNOWN_TRANSCRIPTS.out.lncrna_exonlength,
+        TRANSCRIPT_ANALYSIS.out.novel_combined_metadata,
+        TRANSCRIPT_ANALYSIS.out.novel_lncrna_exon_lengths,
+        TRANSCRIPT_ANALYSIS.out.novel_mrna_exon_lengths,
+        TRANSCRIPT_RECONSTRUCTION.out.h_gene,
+        TRANSCRIPT_RECONSTRUCTION.out.h_transcript,
+        TRANSCRIPT_RECONSTRUCTION.out.pca,
+        TRANSCRIPT_RECONSTRUCTION.out.pca_grouped
+    )
+
     //
     // Collate and save software versions
     //
@@ -70,7 +163,9 @@ workflow LONGNONCODER {
         ch_multiqc_files.collect(),
         ch_multiqc_config.toList(),
         ch_multiqc_custom_config.toList(),
-        ch_multiqc_logo.toList()
+        ch_multiqc_logo.toList(),
+        [],
+        []
     )
 
     emit:

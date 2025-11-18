@@ -2,10 +2,7 @@
 // MODULE: Local to the pipeline
 //
 include { MINIMAP2_ALIGN                  } from '../../modules/nf-core/minimap2/align/main'
-include { SAMTOOLS_VIEW as MAPPED         } from '../../modules/nf-core/samtools/view/main'
-include { SAMTOOLS_VIEW as UNMAPPED       } from '../../modules/nf-core/samtools/view/main'
-include { SAMTOOLS_VIEW as TOTAL          } from '../../modules/nf-core/samtools/view/main'
-include { SAMTOOLS_VIEW as PRIMARY        } from '../../modules/nf-core/samtools/view/main'
+include { NANOCOMP as NANOCOMP_MAPPING    } from '../../modules/nf-core/nanocomp/main'
 
 /*
 ========================================================================================
@@ -18,11 +15,12 @@ workflow ALIGNMENT {
        reads     
     
    main:
-    ch_versions     = Channel.empty()
-    ch_bam          = Channel.empty()
-    ch_index        = Channel.empty()
-    ch_alignment_qc = Channel.empty()
-    ch_reference    = Channel.empty()
+    ch_versions         = Channel.empty()
+    ch_bam              = Channel.empty()
+    ch_index            = Channel.empty()
+    ch_combined_mapping = Channel.empty()
+    ch_alignment_qc     = Channel.empty()
+    ch_reference        = Channel.empty()
 
   // Building metamap for the reference
     Channel
@@ -46,46 +44,29 @@ workflow ALIGNMENT {
 
         MINIMAP2_ALIGN.out.bam
             .set{ ch_bam }
-        MINIMAP2_ALIGN.out.index
-            .set{ ch_index }
 
-        ch_versions = ch_versions.mix(MINIMAP2_ALIGN.out.versions.first().ifEmpty(null))
+        ch_versions = ch_versions.mix(MINIMAP2_ALIGN.out.versions.ifEmpty(null))
 
         if (!params.skip_alignment_qc){
+
             ch_bam
-            .join(ch_index)
-            .set{ ch_alignment_qc }
+             .collect {it[1]}
+             .map {filelist -> [[id:"All"],filelist]}
+             .set {ch_combined_mapping}
 
-            MAPPED(
-                ch_alignment_qc,
-                [[],[]],
-                []
+            NANOCOMP_MAPPING (
+                ch_combined_mapping
             )
 
-            UNMAPPED(
-                ch_alignment_qc,
-                [[],[]],
-                []
-            )
+            ch_alignment_qc = ch_alignment_qc.mix(NANOCOMP_MAPPING.out.stats_txt.collect{it[1]}.ifEmpty([]))
 
-            TOTAL(
-                ch_alignment_qc,
-                [[],[]],
-                []
-            )
-
-            PRIMARY(
-                ch_alignment_qc,
-                [[],[]],
-                []
-            )
-
-            ch_versions = ch_versions.mix(MAPPED.out.versions.first().ifEmpty(null))
+            ch_versions = ch_versions.mix(NANOCOMP_MAPPING.out.versions.ifEmpty(null))
         }
 
    emit:
    index = ch_index
    bam = ch_bam
    reference = ch_reference
+   multiqc = ch_alignment_qc
    versions = ch_versions
 }
