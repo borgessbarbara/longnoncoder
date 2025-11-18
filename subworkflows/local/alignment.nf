@@ -1,8 +1,8 @@
 //
 // MODULE: Local to the pipeline
 //
-include { MINIMAP2_ALIGN                  } from '../../modules/local/minimap2/align/main'
-include { NANOCOMP as NANOCOMP_MAPPING    } from '../../modules/local/nanocomp/main'
+include { MINIMAP2_ALIGN                  } from '../../modules/nf-core/minimap2/align/main'
+include { NANOCOMP as NANOCOMP_MAPPING    } from '../../modules/nf-core/nanocomp/main'
 
 /*
 ========================================================================================
@@ -37,6 +37,7 @@ workflow ALIGNMENT {
         reads,
         ch_reference,
         params.bam_format,
+        params.bam_index_extension,
         params.cigar_paf_format,
         params.cigar_bam
         )
@@ -44,7 +45,7 @@ workflow ALIGNMENT {
         MINIMAP2_ALIGN.out.bam
             .set{ ch_bam }
 
-        ch_versions = ch_versions.mix(MINIMAP2_ALIGN.out.versions.first().ifEmpty(null))
+        ch_versions = ch_versions.mix(MINIMAP2_ALIGN.out.versions.ifEmpty(null))
 
         if (!params.skip_alignment_qc){
 
@@ -59,7 +60,7 @@ workflow ALIGNMENT {
 
             ch_alignment_qc = ch_alignment_qc.mix(NANOCOMP_MAPPING.out.stats_txt.collect{it[1]}.ifEmpty([]))
 
-            ch_versions = ch_versions.mix(NANOCOMP_MAPPING.out.versions.first().ifEmpty(null))
+            ch_versions = ch_versions.mix(NANOCOMP_MAPPING.out.versions.ifEmpty(null))
         }
 
    emit:

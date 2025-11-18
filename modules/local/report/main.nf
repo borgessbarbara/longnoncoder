@@ -20,8 +20,8 @@ process RENDER_REPORT {
         path(protein_coding_exonlength)
         path(lncrna_exonlength)
         path(novel_lncrna_meta)
-        path(novel_lncrna_length)
-        path(novel_protein_coding_length)
+        path(novel_lncrna_exonlength)
+        path(novel_protein_coding_exonlength)
 
         // plots
         path(plot_heatmap_gene)
@@ -62,8 +62,8 @@ process RENDER_REPORT {
             -P protein_coding_exonlength:${protein_coding_exonlength} \\
             -P lncrna_exonlength:${lncrna_exonlength} \\
             -P novel_lncrna_meta:${novel_lncrna_meta} \\
-            -P novel_lncrna_length:${novel_lncrna_length} \\
-            -P novel_protein_coding_length:${novel_protein_coding_length} \\
+            -P novel_lncrna_exonlength:${novel_lncrna_exonlength} \\
+            -P novel_protein_coding_exonlength:${novel_protein_coding_exonlength} \\
             -P plot_heatmap_gene:${plot_heatmap_gene} \\
             -P plot_heatmap_tcpt:${plot_heatmap_tcpt} \\
             -P plot_pca_grouped:${plot_pca_grouped} \\

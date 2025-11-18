@@ -321,6 +321,11 @@
         "bam_format": {
             "type": "boolean"
         },
+        "bam_index_extension": {
+            "type": "string",
+            "description": "BAM index file extension (e.g. .bai or .csi)",
+            "default": ".bai"
+        },
         "cigar_paf_format": {
             "type": "boolean"
         },
@@ -339,6 +344,12 @@
         },
         "organism": {
             "type": "string"
+        },
+        "ensembl_organism_dataset": {
+            "type": "string"
+        },
+        "ensembl_version": {
+            "type": "integer"
         },
         "report_template": {
             "type": "string",
