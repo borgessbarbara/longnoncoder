@@ -7,14 +7,15 @@ format:
     toc-location: left
     number-sections: true
     smooth-scroll: true
-    theme: sandstone
+    theme: cosmo
     embed-resources: true
+    lightbox: true
     df-print: kable
 include-before-body:
   text: |
-    <div style="background-color: #f8f9fa; width: 100%; display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 1px solid #dee2e6;">
+    <div style="background-color: white; width: 100%; display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 1px solid #dee2e6;">
       <div style="display: flex; justify-content: center; padding: 10px 0;">
-        <img src="https://imgur.com/sSriGSM.png" width="400" height="200">
+        <img src="https://imgur.com/sSriGSM.png" width="300" height="200">
       </div>
     </div>
     <br>
@@ -33,7 +34,6 @@ include-after-body:
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 50px; /* space between logos */
         flex-wrap: wrap;
         }
         .footer-logos img {
@@ -48,7 +48,7 @@ include-after-body:
 
     <footer class="report-footer">
         <div class="footer-logos">
-            <img src="https://i.imgur.com/NYZyOLt.png" alt="Logos">
+            <img src="https://imgur.com/zo5HBWq" alt="Logos">
         </div>
     </footer>
 execute:
