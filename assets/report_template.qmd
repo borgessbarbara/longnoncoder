@@ -457,9 +457,9 @@ count_momu <- ann_pc_lnc_txome %>% group_by(gene_biotype, transcript_biotype, cl
 p16 <- ggplot(count_momu, aes(x = transcript_biotype, y = count, fill = transcript_biotype)) +
   geom_bar(stat = "identity") + facet_grid(gene_biotype ~ class_exon, scales = "free_x", space = "free_x") +
   labs(title = "Distribution of mono and multi-exonic transcripts", x = "Transcript biotype", y = "Count (log10 scale)", fill = "Transcript biotype") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  scale_y_log10() + geom_text(aes(label = count), vjust = -0.5, size=3) +
-  theme_minimal(base_size = 14)
+  theme(text = element_text(size = 14),
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_y_log10() + geom_text(aes(label = count), vjust = -0.5, size=3)
 
 p17 <- ggplot(ann_pc_lnc_txome, aes(x = gene_biotype, y = transcript_length, fill = class_exon)) +
   geom_boxplot() + labs(title = "Mono and multi-exonic transcript length", x = "Gene biotype", y = "Transcript length (log10 scale)", fill = "Exon class") +
