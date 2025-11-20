@@ -1,4 +1,4 @@
-process TRANSCRIPT_ANALYSIS {
+process NOVEL_TRANSCRIPTS {
     tag "Report_Generation"
     label 'process_medium'
 
