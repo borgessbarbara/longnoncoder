@@ -570,16 +570,17 @@ class_counts <- novel_tx %>% group_by(biotype, classification) %>% summarise(cou
 ```{r}
 #| label: plot-novel-biotypes-and-classes
 #| fig-cap: "**Figure 15: GFFCompare Classification of Novel Transcripts.** This bar chart shows the counts of novel protein-coding and lncRNA transcripts according to their GFFCompare classification code."
-#| fig-width: 10
-#| fig-height: 12
+#| fig-width: 12
+#| fig-height: 6
 
 p20 <- ggplot(class_counts, aes(x = classification, y = count, fill = classification)) +
   geom_bar(stat = "identity", position = "dodge") +
   geom_text(aes(label = count, y = count), vjust = -0.5, position = position_dodge(width = 0.9), angle = 0, size = 3) +
   facet_grid(~ biotype, scales = "free_x", space = "free_x") +
   labs(title = "GFFCompare classification stats overview of novel protein-coding and lncRNAs", x = "\n\nClassification", y = "Count (log10)", fill = "Classification") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.3, hjust =1), legend.position = "none") +
-  theme_minimal(base_size = 14) + 
+  theme(text = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.3, hjust =1),
+        legend.position = "none") +
 scale_y_log10()
 p20
 ```
@@ -680,8 +681,8 @@ p25 <- ggplot(count_momu_novel, aes(x = classification, y = count, fill = classi
   facet_grid(biotype ~ class_exon, scales = "free_x", space = "free_x") +
   labs(title = "Distribution of mono and multi-exonic novel transcripts", x = "Classification",
        y = "Count (log10 scale)", fill = "Classification") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  theme_minimal(base_size = 14) + 
+  theme(text = element_text(size = 14), 
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_y_log10() + geom_text(aes(label = count), vjust = -0.5, size=3)
 
 # plot exon numbers
@@ -709,9 +710,10 @@ p29 <- ggplot(novel_tx, aes(x = classification, y = len, fill = classification))
   geom_boxplot() + facet_grid(biotype ~ class_exon, scales = "free_x", space = "free_x") +
   labs(title = "Length of mono and multi-exonic novel transcripts", x = "Classification",
        y = "Transcript length (log10 scale)", fill = "Classification") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "right", 
+  theme(text = element_text(size = 14), 
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "right", 
         plot.margin = margin(1, 1, 1, 1, "cm")) +
-  theme_minimal(base_size = 14) + 
   scale_y_log10()
 ```
 
