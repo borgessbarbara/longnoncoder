@@ -5,7 +5,7 @@
 */
 
 include { MULTIQC                           } from '../modules/nf-core/multiqc/main'
-include { TRANSCRIPT_ANALYSIS               } from '../modules/local/tx_annotation/novel_transcripts/main'
+include { NOVEL_TRANSCRIPTS                 } from '../modules/local/tx_annotation/novel_transcripts/main'
 include { SUBSET_BAMBU_COUNTS               } from '../modules/local/tx_annotation/subset_counts/main'
 include { SUBSET_BAMBU_GTF                  } from '../modules/local/tx_annotation/subset_gtf/main'
 include { BAMBU_VALIDATE                    } from '../modules/local/tx_annotation/validate_novel/main'
@@ -87,7 +87,7 @@ workflow LONGNONCODER {
         TRANSCRIPT_RECONSTRUCTION.out.unique_counts
     )
 
-    TRANSCRIPT_ANALYSIS (
+    NOVEL_TRANSCRIPTS (
         ch_gtf_new_transcripts,
         CLASSIFICATION_POTENTIAL_CODING.out.annotated_gtf,
         CLASSIFICATION_POTENTIAL_CODING.out.tmap,
@@ -97,7 +97,7 @@ workflow LONGNONCODER {
     )
 
     BAMBU_VALIDATE (
-        TRANSCRIPT_ANALYSIS.out.novel_combined_metadata,
+        NOVEL_TRANSCRIPTS.out.novel_combined_metadata,
         SUBSET_BAMBU_COUNTS.out.counts_gene_filtered,
         SUBSET_BAMBU_COUNTS.out.counts_transcript_filtered,
         SUBSET_BAMBU_COUNTS.out.cpm_transcript_filtered,
@@ -129,9 +129,9 @@ workflow LONGNONCODER {
         KNOWN_TRANSCRIPTS.out.lncrna_metadata,
         KNOWN_TRANSCRIPTS.out.protein_coding_exonlength,
         KNOWN_TRANSCRIPTS.out.lncrna_exonlength,
-        TRANSCRIPT_ANALYSIS.out.novel_combined_metadata,
-        TRANSCRIPT_ANALYSIS.out.novel_lncrna_exon_lengths,
-        TRANSCRIPT_ANALYSIS.out.novel_mrna_exon_lengths,
+        NOVEL_TRANSCRIPTS.out.novel_combined_metadata,
+        NOVEL_TRANSCRIPTS.out.novel_lncrna_exon_lengths,
+        NOVEL_TRANSCRIPTS.out.novel_mrna_exon_lengths,
         TRANSCRIPT_RECONSTRUCTION.out.h_gene,
         TRANSCRIPT_RECONSTRUCTION.out.h_transcript,
         TRANSCRIPT_RECONSTRUCTION.out.pca,

@@ -34,6 +34,7 @@ include-after-body:
         display: flex;
         justify-content: center;
         align-items: center;
+        gap: 50px; /* space between logos */
         flex-wrap: wrap;
         }
         .footer-logos img {
@@ -41,14 +42,14 @@ include-after-body:
         width: auto;
         transition: opacity 0.3s ease;
         }
-        .footer-logos a:hover img {
+            .footer-logos a:hover img {
         opacity: 0.8;
         }
     </style>
 
     <footer class="report-footer">
         <div class="footer-logos">
-            <img src="https://imgur.com/zo5HBWq" alt="Logos">
+            <img src="https://imgur.com/zo5HBWq.png" alt="Logos">
         </div>
     </footer>
 execute:
@@ -66,7 +67,7 @@ params:
     protein_coding_exonlength: "annotated_protein-coding_exonlength.csv"
     lncrna_exonlength: "annotated_lncRNAs_exonlength.csv"
     novel_lncrna_meta: "novel_pc_lnc_RNAs_metadata.csv"
-    novel_lncrna_exonnlength: "novel_lncRNA_exon_lengths.csv"
+    novel_lncrna_exonlength: "novel_lncRNA_exon_lengths.csv"
     novel_protein_coding_exonlength: "novel_protein-coding_exon_lengths.csv"
     plot_heatmap_gene: "heatmap_gene.png"
     plot_heatmap_tcpt: "heatmap_transcript.png"
@@ -456,7 +457,9 @@ count_momu <- ann_pc_lnc_txome %>% group_by(gene_biotype, transcript_biotype, cl
 p16 <- ggplot(count_momu, aes(x = transcript_biotype, y = count, fill = transcript_biotype)) +
   geom_bar(stat = "identity") + facet_grid(gene_biotype ~ class_exon, scales = "free_x", space = "free_x") +
   labs(title = "Distribution of mono and multi-exonic transcripts", x = "Transcript biotype", y = "Count (log10 scale)", fill = "Transcript biotype") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) + scale_y_log10() + geom_text(aes(label = count), vjust = -0.5, size=3)
+  theme(text = element_text(size = 14),
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  scale_y_log10() + geom_text(aes(label = count), vjust = -0.5, size=3)
 
 p17 <- ggplot(ann_pc_lnc_txome, aes(x = gene_biotype, y = transcript_length, fill = class_exon)) +
   geom_boxplot() + labs(title = "Mono and multi-exonic transcript length", x = "Gene biotype", y = "Transcript length (log10 scale)", fill = "Exon class") +
@@ -466,8 +469,8 @@ p17 <- ggplot(ann_pc_lnc_txome, aes(x = gene_biotype, y = transcript_length, fil
 ```{r}
 #| fig-cap:
 #|   - "**Figure 11: Counts of Mono- vs. Multi-exonic Transcripts.** This plot shows the number of mono- and multi-exonic transcripts for each transcript biotype, separated by protein-coding and lncRNA gene categories."
-#| fig-width: 10
-#| fig-height: 10
+#| fig-width: 8
+#| fig-height: 6
 
 p16
 ```
@@ -567,7 +570,7 @@ class_counts <- novel_tx %>% group_by(biotype, classification) %>% summarise(cou
 ```{r}
 #| label: plot-novel-biotypes-and-classes
 #| fig-cap: "**Figure 15: GFFCompare Classification of Novel Transcripts.** This bar chart shows the counts of novel protein-coding and lncRNA transcripts according to their GFFCompare classification code."
-#| fig-width: 10
+#| fig-width: 12
 #| fig-height: 6
 
 p20 <- ggplot(class_counts, aes(x = classification, y = count, fill = classification)) +
@@ -575,7 +578,10 @@ p20 <- ggplot(class_counts, aes(x = classification, y = count, fill = classifica
   geom_text(aes(label = count, y = count), vjust = -0.5, position = position_dodge(width = 0.9), angle = 0, size = 3) +
   facet_grid(~ biotype, scales = "free_x", space = "free_x") +
   labs(title = "GFFCompare classification stats overview of novel protein-coding and lncRNAs", x = "\n\nClassification", y = "Count (log10)", fill = "Classification") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.3, hjust =1, size=16), legend.position = "none") + scale_y_log10()
+  theme(text = element_text(size = 14),
+        axis.text.x = element_text(angle = 90, vjust = 0.3, hjust =1),
+        legend.position = "none") +
+scale_y_log10()
 p20
 ```
 
@@ -675,7 +681,8 @@ p25 <- ggplot(count_momu_novel, aes(x = classification, y = count, fill = classi
   facet_grid(biotype ~ class_exon, scales = "free_x", space = "free_x") +
   labs(title = "Distribution of mono and multi-exonic novel transcripts", x = "Classification",
        y = "Count (log10 scale)", fill = "Classification") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  theme(text = element_text(size = 14), 
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   scale_y_log10() + geom_text(aes(label = count), vjust = -0.5, size=3)
 
 # plot exon numbers
@@ -687,9 +694,11 @@ p26 <- ggplot(novel_tx, aes(x = biotype, y = num_exons, fill = biotype)) +
 
 median_exnum_class_novel <- novel_tx %>% group_by(biotype, classification) %>% summarise(median_exnum = median(num_exons), .groups = 'drop')
 p27 <- ggplot(novel_tx, aes(x = classification, y = num_exons, fill = classification)) +
-  geom_boxplot() + facet_wrap(~biotype, nrow=2) + theme(plot.margin = margin(1, 1, 1, 1, "cm"), axis.text.x = element_text(angle = 90)) +
+  geom_boxplot() + facet_wrap(~biotype, nrow=2) + theme(plot.margin = margin(1, 1, 1, 1, "cm"), axis.text.x = element_text(angle = 90, vjust = 0.3, hjust =1)) +
   labs(title = "Number of exons across novel transcripts within subtypes", x = "Classification", y = "Exon number (log10 scale)", fill = "Classification\n(total median number)") +
-  scale_y_log10() + scale_fill_discrete(labels = paste0(median_exnum_class_novel$classification, " (", round(median_exnum_class_novel$median_exnum, 2), ")"))
+  scale_y_log10() +
+scale_fill_discrete(labels = paste0(median_exnum_class_novel$classification, " (", 
+                                    round(median_exnum_class_novel$median_exnum, 2), ")"))
 
 # plot exon structure class length
 
@@ -701,7 +710,9 @@ p29 <- ggplot(novel_tx, aes(x = classification, y = len, fill = classification))
   geom_boxplot() + facet_grid(biotype ~ class_exon, scales = "free_x", space = "free_x") +
   labs(title = "Length of mono and multi-exonic novel transcripts", x = "Classification",
        y = "Transcript length (log10 scale)", fill = "Classification") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "right", 
+  theme(text = element_text(size = 14), 
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "right", 
         plot.margin = margin(1, 1, 1, 1, "cm")) +
   scale_y_log10()
 ```
@@ -709,6 +720,8 @@ p29 <- ggplot(novel_tx, aes(x = classification, y = len, fill = classification))
 ```{r}
 #| fig-cap:
 #|   - "**Figure 18: Distribution of mono and multi-exonic structures in Novel Transcripts within its subtypes.** This barplot compares the distribution of mono and multi-exonic structures for novel protein-coding versus novel lncRNA subtypes."
+#| fig-width: 10
+#| fig-height: 8
 
 p25
 ```
@@ -724,7 +737,8 @@ p26
 ```{r}
 #| fig-cap:
 #|   - "**Figure 20: Exon Number in Novel Transcripts within subtypes.** This boxplot compares the number of exons per transcript for novel protein-coding versus novel lncRNA subtypes."
-
+#| fig-width: 10
+#| fig-height: 8
 
 p27
 ```
@@ -739,6 +753,8 @@ p28
 ```{r}
 #| fig-cap:
 #|   - "**Figure 22: Length of mono and multi-exonic structures in Novel Transcripts within subtypes.** This boxplot compares the length of mono and multi-exonic structures for novel protein-coding versus novel lncRNA subtypes."
+#| fig-width: 10
+#| fig-height: 8
 
 p29
 ```
