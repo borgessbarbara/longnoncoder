@@ -470,7 +470,7 @@ p17 <- ggplot(ann_pc_lnc_txome, aes(x = gene_biotype, y = transcript_length, fil
 #| fig-cap:
 #|   - "**Figure 11: Counts of Mono- vs. Multi-exonic Transcripts.** This plot shows the number of mono- and multi-exonic transcripts for each transcript biotype, separated by protein-coding and lncRNA gene categories."
 #| fig-width: 8
-#| fig-height: 6
+#| fig-height: 8
 
 p16
 ```
