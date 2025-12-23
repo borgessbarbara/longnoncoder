@@ -37,7 +37,7 @@ We can describe each step of the workflow as follows:
 
 > \[!NOTE\] If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
 
-Now, you can run the pipeline by following the instructions:
+You can run an example test by following the instructions:
 
 Enter the `test_data` folder
 
