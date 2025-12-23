@@ -57,7 +57,7 @@ Run it
 ./download-ref.sh
 ```
 
-Add YOUR full path for the samples in the `samplesheet.csv` ([file](../test_data/samplesheet.csv)). For example, your full path for a sample could be:
+Add YOUR full path for the samples in the `samplesheet.csv` ([file](test_data/samplesheet.csv)). For example, your full path for a sample could be:
 
 `home/user/longnoncoder/test_data/thesample.fastq.gz`
 
@@ -74,11 +74,11 @@ nextflow run main.nf -profile test,singularity -params-file test_data/testing.ym
 > \[!WARNING\] Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration ***except for parameters***; see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
 
 
-For more details and further functionality, please refer to the [usage documentation](../docs/usage).
+For more details and further functionality, please refer to the [usage documentation](docs/usage.md).
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](../test_data/results) tab on the nf-core website pipeline page. For more details about the output files and reports, please refer to the [output documentation](../docs/output.md).
+To see the results of an example test run with a full size dataset refer to the [results](test_data/results) tab on the nf-core website pipeline page. For more details about the output files and reports, please refer to the [output documentation](docs/output.md).
 
 ## Credits
 
