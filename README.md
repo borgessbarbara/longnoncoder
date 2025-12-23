@@ -1,111 +1,110 @@
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-longnoncoder_logo_dark.png">
-    <img alt="nf-core/longnoncoder" src="docs/images/nf-core-longnoncoder_logo_light.png">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/longnoncoder-logo-dark.png"> 
+    <img src="docs/images/longnoncoder-logo-light.png" alt="longnoncoder logo" width="350"/> 
   </picture>
 </h1>
 
-[![GitHub Actions CI Status](https://github.com/nf-core/longnoncoder/actions/workflows/ci.yml/badge.svg)](https://github.com/nf-core/longnoncoder/actions/workflows/ci.yml)
-[![GitHub Actions Linting Status](https://github.com/nf-core/longnoncoder/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/longnoncoder/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/longnoncoder/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
-[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
-
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
-[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
-[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
-[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/nf-core/longnoncoder)
-
-[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23longnoncoder-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/longnoncoder)[![Follow on Twitter](http://img.shields.io/badge/twitter-%40nf__core-1DA1F2?labelColor=000000&logo=twitter)](https://twitter.com/nf_core)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
+[![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.10.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/) [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/) [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/integrativebioinformatics/longnoncoder) [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/integrativebioinformatics/longnoncoder)
 
 ## Introduction
 
-**nf-core/longnoncoder** is a bioinformatics pipeline that ...
-blablabla
+**integrativebioinformatics/longnoncoder** is a bioinformatics nextflow pipeline that provides a comprehensive analysis of raw long-read RNA-seq data, encompassing transcriptome assembly, quantification, and characterization. The pipeline reports a detailed overview on the entire transcriptome with particular emphasis on lncRNA structure and isoforms across annotated transcripts and novel candidates.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+> LongNonCoder is compatible Ensembl reference genomes and annotations from the following organisms: *Homo sapiens, Mus musculus, Danio rerio, Anolis carolinensis*, *Chrysemys picta belli, Eptatetrus burgeri, Gallus gallus, Latimeria chalumnae, Monodelphis domestica, Notechis scutatus, Ornithorhynchus anatinus*, *Petromyzon marinus, Sphenodon punctatus,* and *Xenopus tropicalis.* **In the next releases, we plan to update the pipeline workflow to cover more organisms or even more general taxonomic classes.**
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
+#### The workflow
 
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+![longnoncoder workflow](docs/images/LongNonCoder.drawio.png)
+
+We can describe each step of the workflow as follows:
+
+1.  Quality control of reads ([NanoComp](https://github.com/wdecoster/nanocomp "wdecoster/nanocomp"))
+2.  Filtering and trimming ([chopper](https://github.com/wdecoster/chopper "wdecoster/chopper"))
+3.  Mapping to a genome reference ([minimap2](https://github.com/lh3/minimap2 "lh3/minimap2") and [samtools](https://github.com/samtools/samtools "samtools"))
+4.  Quality control of mapped reads ([NanoComp](https://github.com/wdecoster/nanocomp "wdecoster/nanocomp"))
+5.  Transcriptome Assembly ([Bambu](https://github.com/GoekeLab/bambu "GoekeLab/bambu"))
+6.  Compare novel transcripts to the annotation reference ([GffCompare](https://github.com/gpertea/gffcompare "gpertea/gffcompare"))
+7.  Convert novel transcripts `GTF` file to `FASTA` ([GffRead](https://github.com/gpertea/gffread "gpertea/gffread"))
+8.  Predict transcripts as protein-coding or non-coding ([RNAmining](https://gitlab.com/integrativebioinformatics/RNAmining "integrativebioinformatics/RNAmining"))
+9.  Gather all data from previous steps and generate informative and re-usable metadata `.csv` and `GTF` files for both novel and annotated transcripts (Metadata handling)
+10. Provide a report and data visualization for the full transcriptome, with emphasis on lncRNAs (Report)
+11. Gather all possible QC information from the previous steps ([MultiQC](https://github.com/MultiQC/MultiQC "MultiQC"))
 
 ## Usage
 
-> [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
+> \[!NOTE\] If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
+Now, you can run the pipeline by following the instructions:
 
-First, prepare a samplesheet with your input data that looks as follows:
+Enter the `test_data` folder
 
-`samplesheet.csv`:
-
-```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
+``` bash
+cd test_data
 ```
 
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
+Download and unzip the reference `FASTA` and `GTF` files, and also download the fastq.gz files:
 
--->
+Make the file executable!!
 
-Now, you can run the pipeline using:
-
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
-
-```bash
-nextflow run nf-core/longnoncoder \
-   -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
-   --outdir <OUTDIR>
+``` bash
+chmod +x download-ref.sh
+```
+Run it
+``` bash
+./download-ref.sh
 ```
 
-> [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
-> see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+Add YOUR full path for the samples in the `samplesheet.csv` ([file](../test_data/samplesheet.csv)). For example, your full path for a sample could be:
 
-For more details and further functionality, please refer to the [usage documentation](https://nf-co.re/longnoncoder/usage) and the [parameter documentation](https://nf-co.re/longnoncoder/parameters).
+`home/user/longnoncoder/test_data/thesample.fastq.gz`
+
+Go back to the main directory and execute the test!
+
+``` bash
+cd ..
+```
+
+``` bash
+nextflow run main.nf -profile test,singularity -params-file test_data/testing.yml
+```
+
+> \[!WARNING\] Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration ***except for parameters***; see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+
+
+For more details and further functionality, please refer to the [usage documentation](../docs/usage).
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/longnoncoder/results) tab on the nf-core website pipeline page.
-For more details about the output files and reports, please refer to the
-[output documentation](https://nf-co.re/longnoncoder/output).
+To see the results of an example test run with a full size dataset refer to the [results](../test_data/results) tab on the nf-core website pipeline page. For more details about the output files and reports, please refer to the [output documentation](../docs/output.md).
 
 ## Credits
 
-nf-core/longnoncoder was originally written by Lucas Freitas.
+integrativebioinformatics/longnoncoder was originally written by Bárbara Borges and Lucas Freitas.
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+João Cavalcante
+
+Gleison Azevedo
+
+Rodrigo Dalmolin
+
+Thaís Gaudencio
+
+Vinícius Maracajá-Coutinho
+
+<h1>
+    <picture> 
+        <source media="(prefers-color-scheme: dark)" srcset="docs/images/institutional-logos-dark-theme.png"> 
+        <img src="docs/images/institutional-logos-light.png" alt="Institutions involved" width="700" style="max-width:100%;height:auto"/> 
+    </picture>
+</h1>
 
 ## Contributions and Support
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
 
-For further information or help, don't hesitate to get in touch on the [Slack `#longnoncoder` channel](https://nfcore.slack.com/channels/longnoncoder) (you can join with [this invite](https://nf-co.re/join/slack)).
-
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use nf-core/longnoncoder for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
-
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
-
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
-
-You can cite the `nf-core` publication as follows:
-
-> **The nf-core framework for community-curated bioinformatics pipelines.**
->
-> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
->
-> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
