@@ -1,0 +1,25 @@
+input: "/your/path/to/samplesheet.csv"
+outdir: "/your/path/to/results"
+
+skip_qc: false
+skip_filtering: false
+skip_alignment: false
+skip_alignment_qc: false
+skip_class: false
+
+minqual: 0
+minlen: 300
+maxgc: 1
+mingc: 0
+headcrop: 0
+tailcrop: 0
+
+reference: "/your/path/to/references/dna.primary_assembly.fa"
+bam_format: true
+cigar_paf_format: false
+cigar_bam: false
+
+annotation: "/your/path/to/references/ensembl_annotation.release.chr.gtf"
+organism: "Homo_sapiens"
+ensembl_organism_dataset: "hsapiens_gene_ensembl"
+ensembl_version: 115
