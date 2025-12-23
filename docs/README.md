@@ -1,6 +1,6 @@
-# nf-core/longnoncoder: Documentation
+# integrativebioinformatics/longnoncoder: Documentation
 
-The nf-core/longnoncoder documentation is split into the following pages:
+The integrativebioinformatics/longnoncoder documentation is split into the following pages:
 
 - [Usage](usage.md)
   - An overview of how the pipeline works, how to run it and a description of all of the different command-line flags.
