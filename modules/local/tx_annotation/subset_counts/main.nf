@@ -27,6 +27,7 @@ process SUBSET_BAMBU_COUNTS {
     script:
     def args = task.ext.args ?: ''
     """
+    
     # Create the validation script
     cat > subset_bambu_counts.sh << 'EOF'
     # Filter out zero-count rows.
@@ -35,7 +36,7 @@ process SUBSET_BAMBU_COUNTS {
 
     # --- Configuration and File Paths ---
 
-    # Define input files (should be in the same directory as the script)
+    # Define input files
     SCRIPT_DIR="\$(pwd)"
 
     # Input files to process
@@ -77,7 +78,7 @@ process SUBSET_BAMBU_COUNTS {
             next
         }
         {
-            # Check if any of the count columns (2 to NF) are not zero
+            # Check if any of the count columns are not zero
             has_counts = 0
             for (i = 2; i <= NF; i++) {
                 if (\$i != 0) {
@@ -92,7 +93,7 @@ process SUBSET_BAMBU_COUNTS {
         }' "\$input_file" > "\$output_file"
     }
 
-    # Function to process transcript files (checks cols 3-NF)
+    # Function to process transcript files 
     process_transcript_file() {
         local input_file="\$1"
         local output_file="\$2"
@@ -107,7 +108,7 @@ process SUBSET_BAMBU_COUNTS {
             next
         }
         {
-            # Check if any of the count columns (3 to NF) are not zero
+            # Check if any of the count columns are not zero
             has_counts = 0
             for (i = 3; i <= NF; i++) {
                 if (\$i != 0) {
@@ -185,8 +186,8 @@ process SUBSET_BAMBU_COUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gawk: \$(awk --version | head -n1 | sed 's/GNU Awk //; s/,.*//')
-        bash: \$(bash --version | head -n1 | sed 's/GNU bash, version //; s/ .*//')
+        awk: \$(awk --version 2>&1 | head -n1 | sed 's/awk, version //; s/ .*//')
+        bash: \$(bash --version | head -n1 | sed 's/bash, version //; s/ .*//')
     END_VERSIONS
     """
 
@@ -201,8 +202,8 @@ process SUBSET_BAMBU_COUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gawk: \$(awk --version | head -n1 | sed 's/GNU Awk //; s/,.*//')
-        bash: \$(bash --version | head -n1 | sed 's/GNU bash, version //; s/ .*//')
+        awk: \$(awk --version 2>&1 | head -n1 | sed 's/awk, version //; s/ .*//')
+        bash: \$(bash --version | head -n1 | sed 's/bash, version //; s/ .*//')
     END_VERSIONS
     """
 }
