@@ -1,5 +1,5 @@
-input: "test_data/samplesheet.csv"
-outdir: "test_data/results"
+input: "/home/mbarb/longnoncoder/test_data/samplesheet.csv"
+outdir: "/home/mbarb/longnoncoder/test_data/results"
 
 skip_qc: false
 skip_filtering: false
@@ -18,7 +18,7 @@ bam_format: true
 cigar_paf_format: false
 cigar_bam: false
 
-annotation: "test_data/Rattus_norvegicus.GRCr8.115.chr.gtf"
+annotation: "/home/mbarb/longnoncoder/test_data/Rattus_norvegicus.GRCr8.115.chr.gtf"
 organism: 'Mus_musculus'
 ensembl_organism_dataset: 'rnorvegicus_gene_ensembl'
 ensembl_version: 115
