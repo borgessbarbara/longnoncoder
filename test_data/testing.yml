@@ -13,7 +13,7 @@ mingc: 0
 headcrop: 0
 tailcrop: 0
 
-reference: "test_data/Rattus_norvegicus.GRCr8.dna.primary_assembly.fa"
+reference: "/home/mbarb/longnoncoder/test_data/Rattus_norvegicus.GRCr8.dna.primary_assembly.fa"
 bam_format: true
 cigar_paf_format: false
 cigar_bam: false
