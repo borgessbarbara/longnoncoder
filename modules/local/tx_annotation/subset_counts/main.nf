@@ -186,8 +186,8 @@ process SUBSET_BAMBU_COUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        awk: \$(awk --version 2>&1 | head -n1 | sed 's/awk, version //; s/ .*//')
-        bash: \$(bash --version | head -n1 | sed 's/bash, version //; s/ .*//')
+        awk: \$(awk --version | head -n1 | sed 's/GNU Awk //; s/,.*//')
+        bash: \$(bash --version | head -n1 | sed 's/GNU bash, version //; s/ .*//')
     END_VERSIONS
     """
 
@@ -202,8 +202,8 @@ process SUBSET_BAMBU_COUNTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        awk: \$(awk --version 2>&1 | head -n1 | sed 's/awk, version //; s/ .*//')
-        bash: \$(bash --version | head -n1 | sed 's/bash, version //; s/ .*//')
+        awk: \$(awk --version | head -n1 | sed 's/GNU Awk //; s/,.*//')
+        bash: \$(bash --version | head -n1 | sed 's/GNU bash, version //; s/ .*//')
     END_VERSIONS
     """
 }

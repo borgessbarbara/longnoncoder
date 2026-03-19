@@ -48,25 +48,6 @@ process SUBSET_BAMBU_GTF {
         "BambuOutput_uniquelyMapped_validated.gtf"
     )
 
-    # --- Argument Handling ---
-
-    if [ "\$#" -gt 0 ]; then
-        if [ "\$1" = "--help" ]; then
-            echo "Usage: \$0"
-            echo "This script creates GTF subsets based on validated transcript count files."
-            echo "Input files expected:"
-            for file in "\${VALIDATED_FILES[@]}"; do
-                echo "  - \$(basename "\$file")"
-            done
-            echo "Output GTF files will be created with corresponding names."
-            exit 0
-        else
-            echo "Error: Unknown argument(s): \$*"
-            echo "Use '\$0 --help' for usage information."
-            exit 1
-        fi
-    fi
-
     # --- Validation Functions ---
 
     check_files() {
@@ -135,17 +116,6 @@ process SUBSET_BAMBU_GTF {
     # Check if required files exist
     check_files
 
-    # Array to keep track of temp files for cleanup
-    declare -a TEMP_IDS_FILES=()
-
-    # Trap to clean up temp files on exit or interruption
-    cleanup_temp_files() {
-        for temp_file in "\${TEMP_IDS_FILES[@]}"; do
-            [ -f "\$temp_file" ] && rm -f "\$temp_file"
-        done
-    }
-    trap cleanup_temp_files EXIT INT TERM
-
     # Process each validated file
     processed_files=0
     for i in "\${!VALIDATED_FILES[@]}"; do
@@ -159,14 +129,14 @@ process SUBSET_BAMBU_GTF {
         fi
 
         # Create temporary file for transcript IDs
-        temp_ids_file="\$(mktemp "temp_transcript_ids_\$(basename "\$input_file" .txt).XXXXXX")"
-        TEMP_IDS_FILES+=("\$temp_ids_file")
+        temp_ids_file="\$(mktemp -p . temp_transcript_ids.XXXXXX)"
 
         # Extract transcript IDs
-        extract_transcript_ids "\$input_file" "\$temp_ids_file" || {
+        if ! extract_transcript_ids "\$input_file" "\$temp_ids_file"; then
             echo "Error: Failed to extract transcript IDs from '\$input_file'." >&2
+            rm -f "\$temp_ids_file"
             exit 1
-        }
+        fi
 
         # Check if we found any transcript IDs
         if [ ! -s "\$temp_ids_file" ]; then
@@ -178,26 +148,17 @@ process SUBSET_BAMBU_GTF {
         # Subset GTF file
         subset_gtf "\$temp_ids_file" "\$output_gtf"
 
-        # If output is empty, warn loudly (valid but uncommon case)
-        if [ ! -s "\$output_gtf" ]; then
-            echo "WARNING: Output GTF '\$(basename "\$output_gtf")' is empty." >&2
-        fi
-
         # Check if output file was created successfully
-        if [ -f "\$output_gtf" ]; then
-            if [ -s "\$output_gtf" ]; then
-                echo "✓ GTF subset '\$(basename "\$output_gtf")' created successfully."
-            else
-                echo "⚠ GTF subset '\$(basename "\$output_gtf")' created, but it might be empty or only contain headers."
-            fi
+        if [ -f "\$output_gtf" ] && [ -s "\$output_gtf" ]; then
+            echo "✓ GTF subset '\$(basename "\$output_gtf")' created successfully."
         else
             echo "✗ Error: Failed to create GTF subset '\$(basename "\$output_gtf")'."
+            rm -f "\$temp_ids_file"
+            exit 1
         fi
 
-        # Clean up temporary file
+        # Clean up temporary file immediately
         rm -f "\$temp_ids_file"
-        # Remove temp_ids_file from TEMP_IDS_FILES to avoid double deletion in trap
-        TEMP_IDS_FILES=("\${TEMP_IDS_FILES[@]/\$temp_ids_file}")
         processed_files=\$((processed_files + 1))
         echo ""
     done
@@ -215,22 +176,6 @@ process SUBSET_BAMBU_GTF {
             echo "  - \$(basename "\$output_gtf")"
         fi
     done
-
-    echo ""
-    echo "Summary of files created:"
-    echo "1. Validated transcript count files:"
-    for file in "\${VALIDATED_FILES[@]}"; do
-        if [ -f "\$file" ]; then
-            echo "   - \$(basename "\$file")"
-        fi
-    done
-    
-    echo "2. Corresponding GTF subsets:"
-    for output_gtf in "\${OUTPUT_GTF_FILES[@]}"; do
-        if [ -f "\$output_gtf" ]; then
-            echo "   - \$(basename "\$output_gtf")"
-        fi
-    done
     EOF
 
     # Make the script executable
@@ -239,12 +184,13 @@ process SUBSET_BAMBU_GTF {
     # Run the validation script
     ./subset_bambu_gtf.sh
 
-    cat <<END_VERSIONS > versions.yml
+    cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        awk: \$(awk --version 2>&1 | head -n1 | sed 's/awk, version //; s/ .*//')
-        bash: \$(bash --version | head -n1 | sed 's/bash, version //; s/ .*//')
+        awk: \$(awk --version | head -n1 | sed 's/GNU Awk //; s/,.*//')
+        bash: \$(bash --version | head -n1 | sed 's/GNU bash, version //; s/ .*//')
     END_VERSIONS
     """
+    
     stub:
     """
     touch BambuOutput_annotations_validated.gtf
@@ -253,8 +199,8 @@ process SUBSET_BAMBU_GTF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        awk: \$(awk --version 2>&1 | head -n1 | sed 's/awk, version //; s/ .*//')
-        bash: \$(bash --version | head -n1 | sed 's/bash, version //; s/ .*//')
+        awk: \$(awk --version | head -n1 | sed 's/GNU Awk //; s/,.*//')
+        bash: \$(bash --version | head -n1 | sed 's/GNU bash, version //; s/ .*//')
     END_VERSIONS
     """
 }

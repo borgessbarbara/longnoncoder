@@ -76,7 +76,7 @@ if (any(grepl("\\.", ens_ids))) {
   warning("Transcript IDs contained version suffix (e.g., .1, .2). Versions were removed for Ensembl query.")
 } else {
   ens_ids_clean <- ens_ids
-  message("Transcript IDs did not contain version suffix. Using as is.")
+  message("Transcript IDs did not contain version suffix. Using as it is.")
 }
 
 ens_tx <- getBM(attributes=attributes, filters=filters, values=ens_ids_clean, mart=ensembl)
