@@ -5,15 +5,14 @@
   </picture>
 </h1>
 
-> (23/12/25) The pipeline is available and working, but we are still working on the documentation, cleaning this repo, etc. Currently we are trying to fix a bug in the tx_annotation/subset_gtf module due to the generation of empty files. But this bug does not affect the pipeline execution at all, it is just some extra information. 
-
 [![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.10.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/) [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/) [![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://tower.nf/launch?pipeline=https://github.com/integrativebioinformatics/longnoncoder) [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/integrativebioinformatics/longnoncoder)
 
 ## Introduction
 
 **integrativebioinformatics/longnoncoder** is a bioinformatics nextflow pipeline that provides a comprehensive analysis of raw long-read RNA-seq data, encompassing transcriptome assembly, quantification, and characterization. The pipeline reports a detailed overview on the entire transcriptome with particular emphasis on lncRNA structure and isoforms across annotated transcripts and novel candidates.
 
-> LongNonCoder is compatible Ensembl reference genomes and annotations from the following organisms: *Homo sapiens, Mus musculus, Danio rerio, Anolis carolinensis*, *Chrysemys picta belli, Eptatetrus burgeri, Gallus gallus, Latimeria chalumnae, Monodelphis domestica, Notechis scutatus, Ornithorhynchus anatinus*, *Petromyzon marinus, Sphenodon punctatus,* and *Xenopus tropicalis.* **In the next releases, we plan to update the pipeline workflow to cover more organisms or even more general taxonomic classes.**
+> [!IMPORTANT]
+> LongNonCoder is compatible Ensembl reference genomes and annotations from the following organisms: > *Homo sapiens, Mus musculus, Danio rerio, Anolis carolinensis*, *Chrysemys picta belli, Eptatetrus burgeri, Gallus gallus, Latimeria chalumnae, Monodelphis domestica, Notechis scutatus, Ornithorhynchus anatinus*, *Petromyzon marinus, Sphenodon punctatus,* and *Xenopus tropicalis.* **In the next releases, we plan to update the pipeline workflow to cover more organisms or even more general taxonomic classes.**
 
 #### The workflow
 
@@ -35,7 +34,8 @@ We can describe each step of the workflow as follows:
 
 ## Usage
 
-> \[!NOTE\] If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
+> [!NOTE]
+> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
 
 You can run an example test by following the instructions:
 
@@ -71,7 +71,8 @@ cd ..
 nextflow run main.nf -profile test,singularity -params-file test_data/testing.yml
 ```
 
-> \[!WARNING\] Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration ***except for parameters***; see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+> [!WARNING]
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration ***except for parameters***; see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
 
 
 For more details and further functionality, please refer to the [usage documentation](docs/usage.md).
