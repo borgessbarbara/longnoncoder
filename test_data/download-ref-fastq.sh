@@ -1,38 +1,38 @@
 #!/usr/bin/bash
 
 # Set base URLs
-BASE_URL="https://ftp.ensembl.org/pub/release-115/fasta/rattus_norvegicus/dna"
-GTF_URL="https://ftp.ensembl.org/pub/release-115/gtf/rattus_norvegicus/Rattus_norvegicus.GRCr8.115.chr.gtf.gz"
+FASTA_URL="https://ftp.ensembl.org/pub/release-114/fasta/rattus_norvegicus/dna/Rattus_norvegicus.GRCr8.dna.primary_assembly.1.fa.gz"
+GTF_URL="https://ftp.ensembl.org/pub/release-114/gtf/rattus_norvegicus/Rattus_norvegicus.GRCr8.114.chr.gtf.gz"
 
-# Chromosome names (1-20, X, Y, MT)
-CHRS=({1..20} X Y MT)
+mkdir -p references
 
-# Download all chromosome fasta files
-for chr in "${CHRS[@]}"; do
-    fname="Rattus_norvegicus.GRCr8.dna.primary_assembly.${chr}.fa.gz"
-    wget "${BASE_URL}/${fname}"
-done
-
-# Concatenate all fasta files into one (after decompressing)
-for chr in "${CHRS[@]}"; do
-    gunzip -c "Rattus_norvegicus.GRCr8.dna.primary_assembly.${chr}.fa.gz"
-done > Rattus_norvegicus.GRCr8.dna.primary_assembly.fa
-
-# Remove individual chromosome fasta files
-rm Rattus_norvegicus.GRCr8.dna.primary_assembly.*.fa.gz
+# Download the FASTA chr1 file
+curl -L "${FASTA_URL}" -o references/Rattus_norvegicus.GRCr8.dna.primary_assembly.1.fa.gz
 
 # Download the GTF file
-wget "${GTF_URL}"
+curl -L "${GTF_URL}" -o references/Rattus_norvegicus.GRCr8.114.chr.gtf.gz
 
-# Unzip the GTF files
+# Unzip the files
 
-gunzip Rattus_norvegicus.GRCr8.115.chr.gtf.gz
+gunzip references/Rattus_norvegicus.GRCr8.dna.primary_assembly.1.fa.gz
+gunzip references/Rattus_norvegicus.GRCr8.114.chr.gtf.gz
 
-echo "Download, concatenation, and decompression complete."
+# separate only chr1 annotations from the GTF file
+awk '$1 == "1"' references/Rattus_norvegicus.GRCr8.114.chr.gtf > references/Rattus_norvegicus.GRCr8.114.chr1.gtf
+
+# remove complete gtf file
+rm references/Rattus_norvegicus.GRCr8.114.chr.gtf
+
+echo -e "\nRat reference chromosome 1 - genome and annotation files downloaded.\n"
 
 # Download the fastq files
 
-curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR848/000/SRR8487230/SRR8487230_1.fastq.gz -o SRR8487230.fastq.gz
-curl -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR848/006/SRR8487226/SRR8487226_1.fastq.gz -o SRR8487226.fastq.gz
+mkdir -p samples
 
-echo "Downloaded fastq files."
+FASTQ_URL="ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR848/"
+
+curl -L "${FASTQ_URL}"000/SRR8487230/SRR8487230_1.fastq.gz -o samples/SRR8487230.fastq.gz
+curl -L "${FASTQ_URL}"006/SRR8487226/SRR8487226_1.fastq.gz -o samples/SRR8487226.fastq.gz
+
+
+echo -e "\nBioProject PRJNA517125 - Downloaded 2 fastq files.\n"

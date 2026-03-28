@@ -33,7 +33,10 @@ process NOVEL_TRANSCRIPTS {
     script:
     def args = task.ext.args ?: ''
     """
-    lncRNA_filter.R \\
+    # Copy the R script to the working directory
+    cp ${projectDir}/bin/lncRNA_filter.R ./
+
+    Rscript lncRNA_filter.R \\
         --bambu_gtf ${bambu_gtf} \\
         --compared_gtf ${compared_gtf} \\
         --tmap_file ${tmap_file} \\

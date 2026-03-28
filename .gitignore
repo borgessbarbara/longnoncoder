@@ -3,3 +3,6 @@ work/
 null/
 ratomics.config
 .tmp*
+test_data/results
+test_data/samples
+test_data/references
