@@ -25,10 +25,10 @@ option_list <- list(
                 help="Path to Bambu gene counts file", metavar="character"),
     make_option(c("--gtf_file"), type="character", default=NULL,
                 help="Path to Bambu GTF annotations file", metavar="character"),
-    make_option(c("--ensembl_organism_dataset"), type="character", default="hsapiens_gene_ensembl",
-                help="Ensembl genome dataset [default= %default]", metavar="character"),
-    make_option(c("--ensembl_version"), type="integer", default=115,
-                help="Ensembl version to use [default= %default]", metavar="integer")
+    make_option(c("--ensembl_organism_dataset"), type="character", default=NULL,
+                help="Ensembl organism genome dataset:", metavar="character"),
+    make_option(c("--ensembl_version"), type="integer", default = NULL,
+                help="Ensembl release version", metavar="integer")
 )
 
 opt_parser <- OptionParser(option_list=option_list)
