@@ -1,25 +1,34 @@
+# input your full path to the samplesheet.csv file and the output directory where you want the results to be saved
 input: "/your/path/to/samplesheet.csv"
 outdir: "/your/path/to/results"
 
+# set the following parameters to true if you want to skip the corresponding steps, otherwise set them to false
 skip_qc: false
 skip_filtering: false
 skip_alignment: false
 skip_alignment_qc: false
 skip_class: false
 
+# set the following QC and filtering parameters 
 minqual: 0
-minlen: 300
+minlen: 300 # default value
 maxgc: 1
 mingc: 0
 headcrop: 0
 tailcrop: 0
 
+# set the full path to your genome and annotation reference files
+# recommendation: always use the latest ensembl release version available
 reference: "/your/path/to/references/dna.primary_assembly.fa"
-bam_format: true
-cigar_paf_format: false
-cigar_bam: false
+annotation: "/your/path/to/references/ensembl_annotation.release.chr.gtf" 
 
-annotation: "/your/path/to/references/ensembl_annotation.release.chr.gtf"
-organism: "Homo_sapiens"
-ensembl_organism_dataset: "hsapiens_gene_ensembl"
-ensembl_version: 115
+# set organism scientific name for ncRNA prediction by RNAmining (check the list of available organisms)
+organism: "Genus_species" # e.g. "Mus_musculus"
+
+# set reference ensembl dataset
+# the scientific name is entirely in lowercase and must follow an abbreviation pattern:
+# the first letter of the genus name followed by the full species name, then "_gene_ensembl"
+ensembl_organism_dataset: "organism_gene_ensembl" # e.g. "mmusculus_gene_ensembl"
+
+# set ensembl release version number according to your reference files
+ensembl_version: 114
