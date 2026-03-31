@@ -71,11 +71,6 @@ workflow PIPELINE_INITIALISATION {
         nextflow_cli_args
     )
     //
-    // Custom validation for pipeline parameters
-    //
-    validateInputParameters()
-
-    //
     // Create channel from input file provided through params.input
     //
     Channel
@@ -117,14 +112,6 @@ workflow PIPELINE_COMPLETION {
     FUNCTIONS
 ========================================================================================
 */
-//
-// Check and validate pipeline parameters
-//
-def validateInputParameters() {
-    return
-}
-
-//
 // Validate channels from input samplesheet
 //
 // def validateInputSamplesheet(input) {
