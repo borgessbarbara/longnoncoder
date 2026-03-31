@@ -1,7 +1,7 @@
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/longnoncoder-logo-dark.png"> 
-    <img src="docs/images/longnoncoder-logo-light.png" alt="longnoncoder logo" width="350"/> 
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/longnoncoder-logo-dark.png">
+    <img src="docs/images/longnoncoder-logo-light.png" alt="longnoncoder logo" width="350"/>
   </picture>
 </h1>
 
@@ -35,7 +35,7 @@ We can describe each step of the workflow as follows:
 ## Usage
 
 > [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
+> If you are new to Nextflow, please refer to the [Nextflow documentation](https://www.nextflow.io/docs/latest/) on setup and usage. Make sure to test your setup with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
 
 You can run an example test by following the instructions:
 
@@ -74,7 +74,7 @@ nextflow run main.nf -profile test,singularity -params-file test_data/testing.ym
 ```
 
 > [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration **_except for parameters_**; see [docs](https://nf-co.re/docs/usage/configuration#custom-configuration-files).
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration **_except for parameters_**; see the Nextflow [configuration documentation](https://www.nextflow.io/docs/latest/config.html).
 
 For more details and further functionality, please refer to the [usage documentation](docs/usage.md).
 
@@ -99,9 +99,9 @@ Thaís Gaudencio
 Vinícius Maracajá-Coutinho
 
 <h1>
-    <picture> 
-        <source media="(prefers-color-scheme: dark)" srcset="docs/images/institutional-logos-dark-theme.png"> 
-        <img src="docs/images/institutional-logos-light.png" alt="Institutions involved" width="700" style="max-width:100%;height:auto"/> 
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/images/institutional-logos-dark-theme.png">
+        <img src="docs/images/institutional-logos-light.png" alt="Institutions involved" width="700" style="max-width:100%;height:auto"/>
     </picture>
 </h1>
 

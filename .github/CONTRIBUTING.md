@@ -10,7 +10,7 @@ However, don't be put off by this template - other more general issues and sugge
 Contributions to the code are even more welcome ;)
 
 > [!NOTE]
-> If you need help using or modifying integrativebioinformatics/longnoncoder then the best place to ask is on the nf-core Slack [#longnoncoder](https://nfcore.slack.com/channels/longnoncoder) channel ([join our Slack here](https://nf-co.re/join/slack)).
+> If you need help using or modifying integrativebioinformatics/longnoncoder, please open an issue in this repository.
 
 ## Contribution workflow
 
@@ -39,7 +39,7 @@ There are typically two types of tests that run:
 
 ### Lint tests
 
-`nf-core` has a [set of guidelines](https://nf-co.re/developers/guidelines) which all pipelines must adhere to.
+This pipeline follows the project contribution and quality guidelines documented in this repository.
 To enforce these and ensure that all pipelines stay in sync, we have developed a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core lint <pipeline-directory>` command.
 
 If any failures or warnings are encountered, please follow the listed URL for more documentation.
@@ -61,7 +61,7 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 ## Getting help
 
-For further information/help, please consult the [integrativebioinformatics/longnoncoder documentation](https://nf-co.re/longnoncoder/usage) and don't hesitate to get in touch on the nf-core Slack [#longnoncoder](https://nfcore.slack.com/channels/longnoncoder) channel ([join our Slack here](https://nf-co.re/join/slack)).
+For further information/help, please consult the repository documentation and open a GitHub issue if needed.
 
 ## Pipeline contribution conventions
 
@@ -107,7 +107,7 @@ If you are using a new feature from core Nextflow, you may bump the minimum requ
 
 ### Images and figures
 
-For overview images and other documents we follow the nf-core [style guidelines and examples](https://nf-co.re/developers/design_guidelines).
+For overview images and other documents, follow the style already used in this repository.
 
 ## GitHub Codespaces
 

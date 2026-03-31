@@ -56,7 +56,7 @@ jobs:
         id: commit-and-push
         if: steps.pre-commit.outcome == 'failure'
         run: |
-          git config user.email "core@nf-co.re"
+          git config user.email "automation@integrativebioinformatics.github"
           git config user.name "nf-core-bot"
           git config push.default upstream
           git add .
