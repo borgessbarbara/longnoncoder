@@ -1,7 +1,7 @@
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/longnoncoder-logo-dark.png"> 
-    <img src="docs/images/longnoncoder-logo-light.png" alt="longnoncoder logo" width="350"/> 
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/longnoncoder-logo-dark.png">
+    <img src="docs/images/longnoncoder-logo-light.png" alt="longnoncoder logo" width="350"/>
   </picture>
 </h1>
 
@@ -12,7 +12,7 @@
 **integrativebioinformatics/longnoncoder** is a bioinformatics nextflow pipeline that provides a comprehensive analysis of raw long-read RNA-seq data, encompassing transcriptome assembly, quantification, and characterization. The pipeline reports a detailed overview on the entire transcriptome with particular emphasis on lncRNA structure and isoforms across annotated transcripts and novel candidates.
 
 > [!IMPORTANT]
-> LongNonCoder is compatible Ensembl reference genomes and annotations from the following organisms: > *Homo sapiens, Mus musculus, Danio rerio, Anolis carolinensis*, *Chrysemys picta belli, Eptatetrus burgeri, Gallus gallus, Latimeria chalumnae, Monodelphis domestica, Notechis scutatus, Ornithorhynchus anatinus*, *Petromyzon marinus, Sphenodon punctatus,* and *Xenopus tropicalis.* **In the next releases, we plan to update the pipeline workflow to cover more organisms or even more general taxonomic classes.**
+> LongNonCoder is compatible Ensembl reference genomes and annotations from the following organisms: > _Homo sapiens, Mus musculus, Danio rerio, Anolis carolinensis_, _Chrysemys picta belli, Eptatetrus burgeri, Gallus gallus, Latimeria chalumnae, Monodelphis domestica, Notechis scutatus, Ornithorhynchus anatinus_, _Petromyzon marinus, Sphenodon punctatus,_ and _Xenopus tropicalis._ **In the next releases, we plan to update the pipeline workflow to cover more organisms or even more general taxonomic classes.**
 
 #### The workflow
 
@@ -35,13 +35,13 @@ We can describe each step of the workflow as follows:
 ## Usage
 
 > [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
+> If you are new to Nextflow, please refer to the [Nextflow documentation](https://www.nextflow.io/docs/latest/) on setup and usage. Make sure to test your setup with `-profile test` before running the workflow on actual data. The pipeline is compatible with both Docker and Singularity.
 
 You can run an example test by following the instructions:
 
 Enter the `test_data` folder
 
-``` bash
+```bash
 cd test_data
 ```
 
@@ -49,12 +49,14 @@ Download and unzip the reference `FASTA` and `GTF` files, and also download the 
 
 Make the file executable!!
 
-``` bash
-chmod +x download-ref.sh
+```bash
+chmod +x download-ref-fastq.sh
 ```
+
 Run it
-``` bash
-./download-ref.sh
+
+```bash
+./download-ref-fastq.sh
 ```
 
 Add YOUR full path for the samples in the `samplesheet.csv` ([file](test_data/samplesheet.csv)). For example, your full path for a sample could be:
@@ -63,23 +65,22 @@ Add YOUR full path for the samples in the `samplesheet.csv` ([file](test_data/sa
 
 Go back to the main directory and execute the test!
 
-``` bash
+```bash
 cd ..
 ```
 
-``` bash
+```bash
 nextflow run main.nf -profile test,singularity -params-file test_data/testing.yml
 ```
 
 > [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration ***except for parameters***; see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
-
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option and input a `yaml` parameters file. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration **_except for parameters_**; see the Nextflow [configuration documentation](https://www.nextflow.io/docs/latest/config.html).
 
 For more details and further functionality, please refer to the [usage documentation](docs/usage.md).
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](test_data/results) tab on the nf-core website pipeline page. For more details about the output files and reports, please refer to the [output documentation](docs/output.md).
+To see the results of an example run, check the output directory configured with `--outdir` (for example, `test_data/results` if you use the provided test parameters). For more details about the output files and reports, please refer to the [output documentation](docs/output.md).
 
 ## Credits
 
@@ -98,9 +99,9 @@ Thaís Gaudencio
 Vinícius Maracajá-Coutinho
 
 <h1>
-    <picture> 
-        <source media="(prefers-color-scheme: dark)" srcset="docs/images/institutional-logos-dark-theme.png"> 
-        <img src="docs/images/institutional-logos-light.png" alt="Institutions involved" width="700" style="max-width:100%;height:auto"/> 
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/images/institutional-logos-dark-theme.png">
+        <img src="docs/images/institutional-logos-light.png" alt="Institutions involved" width="700" style="max-width:100%;height:auto"/>
     </picture>
 </h1>
 

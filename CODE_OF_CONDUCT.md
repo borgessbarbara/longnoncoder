@@ -28,7 +28,7 @@ Please note that the list above is alphabetised and is therefore not ranked in a
 This Code of Conduct (CoC) has been drafted by Renuka Kudva, Cris Tuñí, and Michael Heuer, with input from the nf-core Core Team and Susanna Marquez from the nf-core community. "We", in this document, refers to the Safety Officers and members of the nf-core Core Team, both of whom are deemed to be members of the nf-core community and are therefore required to abide by this Code of Conduct. This document will be amended periodically to keep it up-to-date. In case of any dispute, the most current version will apply.
 :::
 
-An up-to-date list of members of the nf-core core team can be found [here](https://nf-co.re/about).
+An up-to-date list of maintainers can be found in this repository.
 
 Our Safety Officers are Saba Nafees, Cris Tuñí, and Michael Heuer.
 
@@ -97,7 +97,7 @@ All community members are **required** to ask members of the group they are work
 
 If someone makes you feel uncomfortable through their behaviours or actions, report it as soon as possible.
 
-You can reach out to members of the Safety Team (Saba Nafees, Cris Tuñí, and Michael Heuer) on Slack. Alternatively, contact a member of the nf-core core team [nf-core core team](https://nf-co.re/about), and they will forward your concerns to the Safety Team.
+You can reach out to members of the Safety Team through this repository's maintainers.
 
 Issues directly concerning members of the Core Team or the Safety Team will be dealt with by other members of the core team and the safety manager — possible conflicts of interest will be taken into account. nf-core is also in discussions about having an ombudsperson and details will be shared in due course.
 

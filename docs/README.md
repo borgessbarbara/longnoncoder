@@ -7,4 +7,4 @@ The integrativebioinformatics/longnoncoder documentation is split into the follo
 - [Output](output.md)
   - An overview of the different results produced by the pipeline and how to interpret them.
 
-You can find a lot more documentation about installing, configuring and running nf-core pipelines on the website: [https://nf-co.re](https://nf-co.re)
+Additional documentation about installing and running Nextflow is available at [https://www.nextflow.io/docs/latest/](https://www.nextflow.io/docs/latest/).

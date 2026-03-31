@@ -1,23 +1,23 @@
-# nf-core/longnoncoder: Contributing Guidelines
+# integrativebioinformatics/longnoncoder: Contributing Guidelines
 
 Hi there!
-Many thanks for taking an interest in improving nf-core/longnoncoder.
+Many thanks for taking an interest in improving integrativebioinformatics/longnoncoder.
 
-We try to manage the required tasks for nf-core/longnoncoder using GitHub issues, you probably came to this page when creating one.
+We try to manage the required tasks for integrativebioinformatics/longnoncoder using GitHub issues, you probably came to this page when creating one.
 Please use the pre-filled template to save time.
 
 However, don't be put off by this template - other more general issues and suggestions are welcome!
 Contributions to the code are even more welcome ;)
 
 > [!NOTE]
-> If you need help using or modifying nf-core/longnoncoder then the best place to ask is on the nf-core Slack [#longnoncoder](https://nfcore.slack.com/channels/longnoncoder) channel ([join our Slack here](https://nf-co.re/join/slack)).
+> If you need help using or modifying integrativebioinformatics/longnoncoder, please open an issue in this repository.
 
 ## Contribution workflow
 
-If you'd like to write some code for nf-core/longnoncoder, the standard workflow is as follows:
+If you'd like to write some code for integrativebioinformatics/longnoncoder, the standard workflow is as follows:
 
-1. Check that there isn't already an issue about your idea in the [nf-core/longnoncoder issues](https://github.com/nf-core/longnoncoder/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
-2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/longnoncoder repository](https://github.com/nf-core/longnoncoder) to your GitHub account
+1. Check that there isn't already an issue about your idea in the [integrativebioinformatics/longnoncoder issues](https://github.com/integrativebioinformatics/longnoncoder/issues) to avoid duplicating work. If there isn't one already, please create one so that others know you're working on this
+2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [integrativebioinformatics/longnoncoder repository](https://github.com/integrativebioinformatics/longnoncoder) to your GitHub account
 3. Make the necessary changes / additions within your forked repository following [Pipeline conventions](#pipeline-contribution-conventions)
 4. Use `nf-core schema build` and add any new parameters to the pipeline JSON schema (requires [nf-core tools](https://github.com/nf-core/tools) >= 1.10).
 5. Submit a Pull Request against the `dev` branch and wait for the code to be reviewed and merged
@@ -39,7 +39,7 @@ There are typically two types of tests that run:
 
 ### Lint tests
 
-`nf-core` has a [set of guidelines](https://nf-co.re/developers/guidelines) which all pipelines must adhere to.
+This pipeline follows the project contribution and quality guidelines documented in this repository.
 To enforce these and ensure that all pipelines stay in sync, we have developed a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core lint <pipeline-directory>` command.
 
 If any failures or warnings are encountered, please follow the listed URL for more documentation.
@@ -61,11 +61,11 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 ## Getting help
 
-For further information/help, please consult the [nf-core/longnoncoder documentation](https://nf-co.re/longnoncoder/usage) and don't hesitate to get in touch on the nf-core Slack [#longnoncoder](https://nfcore.slack.com/channels/longnoncoder) channel ([join our Slack here](https://nf-co.re/join/slack)).
+For further information/help, please consult the repository documentation and open a GitHub issue if needed.
 
 ## Pipeline contribution conventions
 
-To make the nf-core/longnoncoder code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
+To make the integrativebioinformatics/longnoncoder code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
 
 ### Adding a new step
 
@@ -107,7 +107,7 @@ If you are using a new feature from core Nextflow, you may bump the minimum requ
 
 ### Images and figures
 
-For overview images and other documents we follow the nf-core [style guidelines and examples](https://nf-co.re/developers/design_guidelines).
+For overview images and other documents, follow the style already used in this repository.
 
 ## GitHub Codespaces
 
@@ -115,7 +115,7 @@ This repo includes a devcontainer configuration which will create a GitHub Codes
 
 To get started:
 
-- Open the repo in [Codespaces](https://github.com/nf-core/longnoncoder/codespaces)
+- Open the repo in [Codespaces](https://github.com/integrativebioinformatics/longnoncoder/codespaces)
 - Tools installed
   - nf-core
   - Nextflow

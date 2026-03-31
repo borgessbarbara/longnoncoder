@@ -1,6 +1,6 @@
 {
-    "name": "nf-core/longnoncoder",
-    "homePage": "https://github.com/nf-core/longnoncoder",
+    "name": "integrativebioinformatics/longnoncoder",
+    "homePage": "https://github.com/integrativebioinformatics/longnoncoder",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {
