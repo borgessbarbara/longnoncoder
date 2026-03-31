@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/longnoncoder
+    integrativebioinformatics/longnoncoder
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/longnoncoder
+    Github : https://github.com/integrativebioinformatics/longnoncoder
     Website: https://nf-co.re/longnoncoder
     Slack  : https://nfcore.slack.com/channels/longnoncoder
 ----------------------------------------------------------------------------------------
@@ -20,19 +20,6 @@ nextflow.enable.dsl = 2
 include { LONGNONCODER            } from './workflows/longnoncoder'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_longnoncoder_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_longnoncoder_pipeline'
-
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_longnoncoder_pipeline'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-params.fasta = getGenomeAttribute('fasta')
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -4,4 +4,4 @@ contact_links:
     about: Please join the nf-core community here
   - name: "Slack #longnoncoder channel"
     url: https://nfcore.slack.com/channels/longnoncoder
-    about: Discussion about the nf-core/longnoncoder pipeline
+    about: Discussion about the integrativebioinformatics/longnoncoder pipeline
