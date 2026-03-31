@@ -140,7 +140,7 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
 - `docker`
   - A generic configuration profile to be used with [Docker](https://docker.com/)
 - `singularity`
-  - A generic configuration profile to be used with [Singularity](https://docs.sylabs.io/guides/latest/user-guide/)
+  - A generic configuration profile to be used with [Singularity](https://docs.sylabs.io/guides/3.11/user-guide/)
 - `podman`
   - A generic configuration profile to be used with [Podman](https://podman.io/)
 - `shifter`
